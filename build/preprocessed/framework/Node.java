@@ -144,6 +144,7 @@ public /*abstract*/ class Node {
     public void romoveNow(){
         n_bExited = true;
         n_bRemoved = true;
+        n_KeyEvent = null;
         Node node = n_chd_head;
         while(node != null){
             if(!node.n_bRemoved){

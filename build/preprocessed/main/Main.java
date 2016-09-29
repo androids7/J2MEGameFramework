@@ -9,6 +9,8 @@ import framework.action.MoveTo;
 import framework.action.Animation;
 import framework.*;
 import framework.action.Blink;
+import framework.net.Http;
+import framework.net.IHttpEvent;
 /**
  *
  * @author Administrator
@@ -61,7 +63,18 @@ public class Main extends App{
         Animation b = Blink.create(4, 150);
         b.onCompleted = new Runnable(){
             public void run(){
-                App.getInstance().pause();
+                //App.getInstance().pause();
+                Http.post("http://198.11.179.32/httpTest.php","a=132&b=654" ,new IHttpEvent() {
+                    public void onHttpSuccess(byte[] data) {
+                        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                        System.out.println("onHttpSuccess:" + new String(data,0,data.length));
+                    }
+
+                    public void onHttpError(int code, String msg) {
+                        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                        System.out.println("onHttpError:" + code + " " + msg);
+                    }
+                });
             }
         };
         node.runAction(b);
