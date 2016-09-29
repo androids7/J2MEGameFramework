@@ -1,0 +1,5 @@
+#ignore buid dir
+build/*
+
+#ignore nb_bin_out dir
+nb_bin_out.tmp/*
