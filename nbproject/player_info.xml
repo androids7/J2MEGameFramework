@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    *************************************************************************
+    ycg1213@vip.qq.com
+    2011-08-04 17:10
+    方便调试，创建多个jad文件用，每个jad包含特定的用户信息参数
+    *************************************************************************
+-->
+<project>
+    <!-- 这里配置需要替换的关键字 -->
+    <property name="replace_tok"        value="vl_accountid: 21000655"/>
+    <property name="replace_tok_ip"     value="vl_server_ip: 192.168.10.13"/>
+    <property name="replace_tok_port"   value="vl_server_port: 21102"/>
+
+    <target name="make_my_jad">
+        <!-- 
+        创建一个包含指定用户信息的jad ，要创建新的用户，copy该antcall过程 
+        new_user_index  值递增
+        new_user_info   该字符串将会替换到新copy出的jad文件中，替换掉replace_tok的值
+        -->
+        <!-- 用户1 -->
+        <antcall target="make_jad">
+            <param name="new_user_index"    value="1"/>
+            <param name="new_user_info"     value="vl_accountid: 21000656"/>
+        </antcall>
+
+        <!-- 另外一个服务器的用户组 -->
+        <property name="new_ip"             value="vl_server_ip: 192.168.0.179"/>
+        <property name="new_port"           value="vl_server_port: 2008"/>
+        <property name="new_server_name"    value="179"/>
+        
+        <antcall target="make_jad_replace_ip">
+            <param name="new_user_index"    value="1"/>
+            <param name="new_user_info"     value="vl_accountid: 21000656"/>
+            <param name="new_ip"            value="${new_ip}"/>
+            <param name="new_port"          value="${new_port}"/>
+        </antcall>            
+        <antcall target="make_jad_replace_ip">
+            <param name="new_user_index"    value="2"/>
+            <param name="new_user_info"     value="vl_accountid: 21000657"/>
+            <param name="new_ip"            value="${new_ip}"/>
+            <param name="new_port"          value="${new_port}"/>
+        </antcall>        
+    </target>
+    
+    <!-- 根据传入参数创建新的jad文件，相当于一个函数，创建多个jad用 -->
+    <target name="make_jad">
+        <property name="new_jad_file" value="${dist.dir}/user${new_user_index}_${dist.jad}"/>
+        <copy file="${dist.dir}/${dist.jad}" tofile="${new_jad_file}" failonerror="false"/>
+        <replace file="${new_jad_file}" token="${replace_tok}" value="${new_user_info}"/>
+        <echo level="warning" message="ycg make new Jad file"/>
+        <echo level="warning" message="filename = ${new_jad_file}"/>
+        <echo level="warning" message="userindex= ${new_user_index}"/>
+        <echo level="warning" message="userinfo = ${new_user_info}"/>
+    </target>
+    <!-- 生成另外一个服务器的jad文件 -->
+    <target name="make_jad_replace_ip">
+        <property name="new_jad_file" value="${dist.dir}/${new_server_name}_user${new_user_index}_${dist.jad}"/>
+        <copy file="${dist.dir}/${dist.jad}" tofile="${new_jad_file}" failonerror="false"/>
+        <replace file="${new_jad_file}" token="${replace_tok}" value="${new_user_info}"/>
+        <replace file="${new_jad_file}" token="${replace_tok_ip}" value="${new_ip}"/>
+        <replace file="${new_jad_file}" token="${replace_tok_port}" value="${new_port}"/>
+        <echo level="warning" message="ycg make new Jad file"/>
+        <echo level="warning" message="filename = ${new_jad_file}"/>
+        <echo level="warning" message="userindex= ${new_user_index}"/>
+        <echo level="warning" message="userinfo = ${new_user_info}"/>
+    </target>    
+</project>
+
