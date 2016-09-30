@@ -88,6 +88,7 @@ public class UiThread {
             // update
             long upDt = System.currentTimeMillis() - updateTime;
             updateTime = System.currentTimeMillis();
+            Timer.update(upDt);
             if(Scene.curScene != null){
                 
                 // Ö´ÐÐ¸÷NodeµÄ update

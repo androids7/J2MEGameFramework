@@ -13,8 +13,12 @@ public class Blink extends Animation{
 
     private Blink(){}
     public void update(long dt) {
-        if(mStatus < 0){
+        if(mStatus == STATUS_UN_START){
             mStatus = STATUS_START;
+            b_nums = b_timer;
+            if(mListener != null){
+                mListener.onActionEnter(this);
+            }
             this.mStartTime = 0;
         }else if(mStatus == 0){
             this.mStartTime += dt;
@@ -35,9 +39,10 @@ public class Blink extends Animation{
     }
     
     byte b_nums = -1;
+    byte b_timer = -1;
     public static Blink create(int nums,long dt){
         Blink b = new Blink();
-        b.b_nums = (byte)(nums * 2);
+        b.b_timer = (byte)(nums * 2);
         b.mEndTime = dt;
         return b;
     }

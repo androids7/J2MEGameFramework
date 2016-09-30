@@ -17,11 +17,11 @@ public class Delay extends Animation{
     public void update(long dt) {
         if(mStatus < 0){
             mStatus = STATUS_START;
-            mStartTime = System.currentTimeMillis();
-            mEndTime += mStartTime;
             if(mListener != null){
                 mListener.onActionEnter(this);
             }
+            mStartTime = System.currentTimeMillis();
+            mEndTime += mStartTime;
         }else if(mStatus == 0){
             this.mStartTime += dt;
             if(this.mStartTime >= this.mEndTime){

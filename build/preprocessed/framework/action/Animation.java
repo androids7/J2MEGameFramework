@@ -32,6 +32,9 @@ public abstract class Animation {
     public boolean isCompleted(){
         return mStatus == STATUS_COMPLETED;
     }
+    public void reset(){
+        mStatus = STATUS_UN_START;
+    }
     
     protected Node a_node;
     public void setNode(Node node){

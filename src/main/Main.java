@@ -9,6 +9,10 @@ import framework.action.MoveTo;
 import framework.action.Animation;
 import framework.*;
 import framework.action.Blink;
+import framework.action.MoveBy;
+import framework.action.Repeat;
+import framework.action.Sequence;
+import framework.action.Spawn;
 import framework.net.Http;
 import framework.net.IHttpEvent;
 /**
@@ -59,9 +63,9 @@ public class Main extends App{
                 //tmp.removeSelf();
             }
         };
-        node.runAction(a);
+        //node.runAction(a);
         Animation b = Blink.create(4, 150);
-        b.onCompleted = new Runnable(){
+        /*b.onCompleted = new Runnable(){
             public void run(){
                 //App.getInstance().pause();
                 Http.post("http://198.11.179.32/httpTest.php","a=132&b=654" ,new IHttpEvent() {
@@ -76,8 +80,18 @@ public class Main extends App{
                     }
                 });
             }
-        };
-        node.runAction(b);
+        };*/
+        //node.runAction(b);
+        Spawn asp = Spawn.create();
+        asp.addAction(a);
+        asp.addAction(b);
+        //node.runAction(asp);
+        
+        Sequence seq = Sequence.create(new Animation[]{a,b});
+        //node.runAction(seq);
+        
+        //node.runAction(Repeat.create(a));
+        node.runAction(Repeat.create(Sequence.create(new Animation[]{MoveBy.create(0, 100, 600),MoveBy.create(0, -100, 600)})));
         
         tmp.setKeyEventListener(new IKeyEvent() {
             public boolean onKeyDown(int keyCode) {
@@ -111,6 +125,13 @@ public class Main extends App{
                 return true;
             }
         });
+        
+        final long timerStartTime = System.currentTimeMillis();
+        Timer.create(2000, new Runnable() {
+            public void run() {
+                System.out.println("Timer ...:"+(System.currentTimeMillis() - timerStartTime));
+            }
+        },-1);
     }
 
     protected void onPause() {
