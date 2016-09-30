@@ -131,7 +131,7 @@ public class Main extends App{
             public void run() {
                 System.out.println("Timer ...:"+(System.currentTimeMillis() - timerStartTime));
             }
-        },-1);
+        },true);
     }
 
     protected void onPause() {

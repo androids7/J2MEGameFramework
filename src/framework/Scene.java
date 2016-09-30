@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package framework;
 
 import java.util.Hashtable;
@@ -11,7 +5,7 @@ import javax.microedition.lcdui.Graphics;
 
 /**
  *
- * @author Administrator
+ * @author chizl
  */
 public class Scene extends Node {
 
@@ -103,18 +97,9 @@ public class Scene extends Node {
         System.out.println("... update:"+dt);
     }
     
-    /*
-    public void onDraw(Graphics g){
-        g.setColor(0xff00ff);
-        String msg = "fps:" + UiThread.getInstance().curFps;
-        g.drawChars(msg.toCharArray(), 0, msg.length(), 100, 50, 0);
-    }
-    */
-
     protected void drawSelf(Graphics g){
         g.setColor(0xff00ff);
         String msg = "fps:" + UiThread.getInstance().curFps;
         g.drawChars(msg.toCharArray(), 0, msg.length(), 8, 8, 0);
     }
-
 }

@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package framework;
 
 import javax.microedition.lcdui.Font;
@@ -11,7 +5,7 @@ import javax.microedition.lcdui.Graphics;
 
 /**
  *
- * @author Administrator
+ * @author chizl
  */
 public class DrawNode extends Node {
     
