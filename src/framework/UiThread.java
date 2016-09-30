@@ -124,6 +124,7 @@ public class UiThread {
             }
             
             bPainted = false;
+            System.gc();
             if(!bExited)
                 getSceneCanvas().repaint();
         }
