@@ -147,6 +147,12 @@ public class Main extends App{
         sp3.runSpriteFrames(frames,350, -1);
         Scene.getCurScene().addChild(sp3);
         
+        SlideBar sb = SlideBar.create("/button.png");
+        sb.setPos(350, 450);
+        sb.setValue(50);
+        //sb.setModel(SlideBar.MODEL_VERTICAL_TOP);
+        Scene.getCurScene().addChild(sb);
+        
     }
 
     protected void onPause() {

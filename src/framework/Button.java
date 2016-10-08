@@ -12,7 +12,7 @@ import javax.microedition.lcdui.Image;
 
 /**
  *
- * @author Administrator
+ * @author chizl
  */
 public class Button extends Node{
     
