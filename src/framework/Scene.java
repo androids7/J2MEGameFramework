@@ -65,7 +65,7 @@ public class Scene extends Node {
     private boolean doKeyEventNode(Node node,int type,int keyCode){
         while(node != null){
             if(!doKeyEventNode(node.n_chd_head,type,keyCode)){
-                if(node.n_KeyEvent != null){
+                if(node.n_KeyEvent != null && node.n_bShowed){
                     switch(type){
                         case 0:
                             if(node.n_KeyEvent.onKeyDown(keyCode)){

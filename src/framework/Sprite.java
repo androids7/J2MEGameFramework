@@ -16,9 +16,9 @@ public class Sprite extends Node{
 
     protected void drawSelf(Graphics g){
         if(mImage != null){
-            g.setClip(this.x, this.y, mImage.getWidth(), mImage.getHeight());
+            g.setClip(this.x - mImage.getWidth()/2, this.y - mImage.getHeight()/2, mImage.getWidth(), mImage.getHeight());
             g.setColor(n_Color);
-            g.drawImage(mImage, this.x, this.y, 0);
+            g.drawImage(mImage, this.x - mImage.getWidth()/2, this.y - mImage.getHeight()/2, 0);
         }
     }
     

@@ -16,7 +16,7 @@ public class DrawNode extends Node {
     
     private DrawNode(){}
     
-    public static DrawNode createTTF(String msg){
+    public static DrawNode createLabel(String msg){
         DrawNode node = new DrawNode();
         node.mModel = 0;
         node.mString = msg;

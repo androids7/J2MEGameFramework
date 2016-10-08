@@ -131,21 +131,21 @@ public class UiThread {
         
         protected void keyPressed(int keyCode){
             //System.out.println("KeyEvent down : "+keyCode);
-            if(Scene.curScene != null){
+            if(Scene.curScene != null && App.getInstance().bRuning){
                 Scene.curScene.doKeyDown(keyCode);
             }
         }
         
         protected void keyReleased(int keyCode){
             //System.out.println("KeyEvent up : "+keyCode);
-            if(Scene.curScene != null){
+            if(Scene.curScene != null && App.getInstance().bRuning){
                 Scene.curScene.doKeyUp(keyCode);
             }
         }
         
         protected void keyRepeated(int keyCode){
             //System.out.println("KeyEvent press : "+keyCode);
-            if(Scene.curScene != null){
+            if(Scene.curScene != null && App.getInstance().bRuning){
                 Scene.curScene.doKeyPress(keyCode);
             }
         }

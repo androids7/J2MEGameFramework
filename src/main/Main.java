@@ -25,7 +25,7 @@ public class Main extends App{
         
         Scene.run(new Scene());
         
-        DrawNode node =  DrawNode.createTTF("aaaaa");
+        DrawNode node =  DrawNode.createLabel("aaaaa");
         node.setPos((short)100, (short)50);
         node.setColor(0xff00ff);
         Scene.getCurScene().addChild(node);
@@ -132,6 +132,11 @@ public class Main extends App{
                 System.out.println("Timer ...:"+(System.currentTimeMillis() - timerStartTime));
             }
         },true);
+        
+        Button bt = Button.create("/button.png");
+        bt.setLabel("Button");
+        bt.setPos(50, 50);
+        Scene.getCurScene().addChild(bt);
     }
 
     protected void onPause() {
