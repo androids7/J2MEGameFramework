@@ -143,9 +143,10 @@ public class Main extends App{
         frames[0] = Sprite.makeImage("/logo1.png");
         frames[1] = Sprite.makeImage("/button.png");
         Sprite sp3 = Sprite.create(frames[0]);
-        sp3.setPos(550, 450);
-        sp3.runSpriteFrames(frames,350, -1);
+        sp3.setPos(550 - 80, 450);
+        //sp3.runSpriteFrames(frames,350, -1);
         Scene.getCurScene().addChild(sp3);
+        //sp3.setFlipedXY();
         
         SlideBar sb = SlideBar.create("/button.png");
         sb.setPos(350, 450);

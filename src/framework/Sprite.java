@@ -18,6 +18,9 @@ public class Sprite extends Node{
     int s_FrameTotalDelayTime = -1;
     int s_curFrameIndex = 0;
     
+    boolean s_bFlipedX = false;
+    boolean s_bFlipedY = false;
+    
     private Sprite(){}
 
     protected void drawSelf(Graphics g){
@@ -55,6 +58,7 @@ public class Sprite extends Node{
         }else{
             this.n_rect = Rect.ZERO;
         }
+        fiped();
         return this;
     }
     
@@ -96,6 +100,93 @@ public class Sprite extends Node{
                 s_FrameCurDelayTime = 0;
             }
         }
+    }
+    
+    public Sprite setFlipedX(){
+        s_bFlipedX = !s_bFlipedX;
+        if(s_Image != null){
+            Image tmp = s_Image;
+            int w = tmp.getWidth();
+            int h = tmp.getHeight();
+            int [] rgb1 = new int[w * h];
+            int [] rgb2 = new int[w * h];
+            tmp.getRGB(rgb1, 0, w, 0, 0, w, h);
+            
+            for(int i=0;i<w;i++){
+                for(int j=0;j<h;j++){
+                    rgb2[(w-i-1)+j*w] = rgb1[i+j*w];
+                }
+            }
+            s_Image = Image.createRGBImage(rgb2, w, h, true);
+        }
+        return this;
+    }
+    public Sprite setFlipedY(){
+        s_bFlipedY = !s_bFlipedY;
+        if(s_Image != null){
+            Image tmp = s_Image;
+            int w = tmp.getWidth();
+            int h = tmp.getHeight();
+            int [] rgb1 = new int[w * h];
+            int [] rgb2 = new int[w * h];
+            tmp.getRGB(rgb1, 0, w, 0, 0, w, h);
+            for(int i=0;i<w;i++){
+                for(int j=0;j<h;j++){
+                    rgb2[i+(h-1-j)*w] = rgb1[i+j*w];
+                }
+            }
+            s_Image = Image.createRGBImage(rgb2, w, h, true);
+        }
+        return this;
+    }
+    public Sprite setFlipedXY(){
+        s_bFlipedX = !s_bFlipedX;
+        s_bFlipedY = !s_bFlipedY;
+        if(s_Image != null){
+            Image tmp = s_Image;
+            int w = tmp.getWidth();
+            int h = tmp.getHeight();
+            int [] rgb1 = new int[w * h];
+            int [] rgb2 = new int[w * h];
+            tmp.getRGB(rgb1, 0, w, 0, 0, w, h);
+            for(int i=0;i<w;i++){
+                for(int j=0;j<h;j++){
+                    rgb2[(w-i-1)+(h-1-j)*w] = rgb1[i+j*w];
+                }
+            }
+            s_Image = Image.createRGBImage(rgb2, w, h, true);
+        }
+        return this;
+    }
+    private void fiped(){
+        if(s_Image != null && (s_bFlipedX || s_bFlipedY)){
+            Image tmp = s_Image;
+            int w = tmp.getWidth();
+            int h = tmp.getHeight();
+            int [] rgb1 = new int[w * h];
+            int [] rgb2 = new int[w * h];
+            tmp.getRGB(rgb1, 0, w, 0, 0, w, h);
+            for(int i=0;i<w;i++){
+                for(int j=0;j<h;j++){
+                    int index = (s_bFlipedX ? (w-i-1) : i) 
+                            + (s_bFlipedY ? (h-1-j)*w : j * w);
+                    rgb2[index] = rgb1[i+j*w];
+                }
+            }
+            s_Image = Image.createRGBImage(rgb2, w, h, true);
+        }
+    }
+    
+    public static Sprite createTestSprite(){
+        Sprite sp = new Sprite();
+        int[] rgb = new int[50*50];
+        for(int i=0;i<50;i++){
+            for(int j=0;j<50;j++){
+                rgb[i + j*50] = 0xcfffff00;             
+            }
+        }
+        sp.s_Image = Image.createRGBImage(rgb, 50, 50, true);  // true: color = 0xaarrggbb false : color = 0xrrggbb
+        return sp;
     }
     
 }
