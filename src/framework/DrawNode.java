@@ -14,8 +14,11 @@ public class DrawNode extends Node {
     int mLineColor = 0xffffff;
     Rect mLineRect = null;
     
+    String mString = null;
+    
     private DrawNode(){}
     
+    Font mFont = null;
     public static DrawNode createLabel(String msg){
         DrawNode node = new DrawNode();
         node.mModel = 0;
@@ -91,10 +94,9 @@ public class DrawNode extends Node {
         
     }
     
-    String mString = null;
     void drawString(Graphics g){
         if(mString != null && !mString.equals("")){
-            Font font = g.getFont();
+            Font font = this.getFont();
             int w = font.stringWidth(mString);
             int h = font.getHeight();
             g.setClip(this.x, this.x,w,h);
@@ -151,6 +153,33 @@ public class DrawNode extends Node {
                     this.y + n_rect.y - n_rect.height/2, 
                     n_rect.width, n_rect.height,n_rect.width, n_rect.height);
         }
+    }
+    
+    public Font getFont(){
+        if(this.mModel != 0){
+            return null;
+        }else if(this.mFont == null){
+            this.mFont = Font.getDefaultFont();
+            int w = this.mFont.stringWidth(mString);
+            int h = this.mFont.getHeight();
+            this.n_rect = new Rect(this.x,this.y,w,h);
+        }
+        return this.mFont;
+    }
+    public DrawNode setFont(Font font){
+        if(this.mModel == 0){
+            if(font != null){
+                this.mFont = font;
+            }else{
+                this.mFont = Font.getDefaultFont();
+            }
+            int w = this.mFont.stringWidth(mString);
+            int h = this.mFont.getHeight();
+            this.n_rect = new Rect(this.x,this.y,w,h);
+        }else{
+            System.err.println("DrawNode is not Label model");
+        }
+        return this;
     }
 
 }

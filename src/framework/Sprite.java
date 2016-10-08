@@ -10,22 +10,26 @@ import javax.microedition.lcdui.Image;
  */
 public class Sprite extends Node{
     
-    Image mImage = null;
+    Image s_Image = null;
+    
+    Image s_Frames[] = null;
+    int s_FrameTimes = -1;
+    int s_FrameCurDelayTime = -1;
+    int s_FrameTotalDelayTime = -1;
+    int s_curFrameIndex = 0;
     
     private Sprite(){}
 
     protected void drawSelf(Graphics g){
-        if(mImage != null){
-            g.setClip(this.x - mImage.getWidth()/2, this.y - mImage.getHeight()/2, mImage.getWidth(), mImage.getHeight());
+        if(s_Image != null){
+            g.setClip(this.x - s_Image.getWidth()/2, this.y - s_Image.getHeight()/2, s_Image.getWidth(), s_Image.getHeight());
             g.setColor(n_Color);
-            g.drawImage(mImage, this.x - mImage.getWidth()/2, this.y - mImage.getHeight()/2, 0);
+            g.drawImage(s_Image, this.x - s_Image.getWidth()/2, this.y - s_Image.getHeight()/2, 0);
         }
     }
     
     public static Sprite create(String file){
-        Sprite sp = new Sprite();
-        sp.makeImage(file);
-        return sp;
+        return create(makeImage(file));
     }
     
     public static Sprite create(Image image){
@@ -34,16 +38,64 @@ public class Sprite extends Node{
         return sp;
     }
     
-    private void makeImage(String file){
+    public static Image makeImage(String file){
+        Image img = null;
         try {
-            mImage = Image.createImage(file);
+            img = Image.createImage(file);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        return img;
     }
     
-    public void setImage(Image image){
-        mImage = image;
+    public Sprite setImage(Image image){
+        this.s_Image = image;
+        if(this.s_Image != null){
+            this.n_rect = new Rect(this.x - s_Image.getWidth()/2, this.y - s_Image.getHeight()/2, s_Image.getWidth(), s_Image.getHeight());
+        }else{
+            this.n_rect = Rect.ZERO;
+        }
+        return this;
+    }
+    
+    public Image getImage(){
+        return this.s_Image;
+    }
+    
+    /**
+     * Sprite帧动画
+     * @param 图片数组
+     * @param 每一帧的间隔时间
+     * @param 循环次数，<=0 : 无限循环， 
+     */
+    public void runSpriteFrames(Image[] images,int delayTime,int times){
+        this.s_Frames = images;
+        this.s_FrameTotalDelayTime = delayTime;
+        this.s_FrameTimes = times - 1;
+        this.s_curFrameIndex = 0;
+    }
+    
+    protected void animUpdate(long dt){
+        super.animUpdate(dt);
+        if(s_Frames != null){
+            s_FrameCurDelayTime += dt;
+            if(s_FrameCurDelayTime >= s_FrameTotalDelayTime){
+                if(s_curFrameIndex == s_Frames.length){
+                    s_curFrameIndex = 0;
+                    if(s_FrameTimes < 0){
+                        s_Image = s_Frames[s_curFrameIndex];
+                    }else if(s_FrameTimes == 0){
+                        s_Frames = null;
+                    }else{
+                        s_FrameTimes--;
+                        s_Image = s_Frames[s_curFrameIndex];
+                    }
+                }else{
+                    s_Image = s_Frames[s_curFrameIndex++];
+                }
+                s_FrameCurDelayTime = 0;
+            }
+        }
     }
     
 }

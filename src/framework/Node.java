@@ -78,7 +78,13 @@ public /*abstract*/ class Node {
         n_childNums++;
         addNode(n);
     }
-    private void addNode(Node n){
+    private void addNode(Node n) {
+        
+        if(n.n_parent != null){
+            System.err.println("Node is be added!");
+            return;
+        }
+        
         n.n_parent = this;
         
         if(n_chd_head == null){

@@ -58,6 +58,7 @@ public class Button extends Node{
         bt.bt_NormalImage = normalImage;
         bt.bt_SelectedImage = selectedImage;
         bt.bt_DisableImage = disableImage;
+        bt.autoSetRect();        
         return bt;
     }
     public static Button create(Image normalImage,Image selectedImage){
@@ -67,11 +68,7 @@ public class Button extends Node{
         return create(normalImage,null,null);
     }
     public static Button create(String normalImage,String selectedImage,String disableImage){
-        Button bt = new Button();
-        bt.bt_NormalImage = makeImage(normalImage);
-        bt.bt_SelectedImage = makeImage(selectedImage);
-        bt.bt_DisableImage = makeImage(disableImage);
-        return bt;
+        return create(makeImage(normalImage),makeImage(selectedImage),makeImage(disableImage));
     }
     public static Button create(String normalImage,String selectedImage){
         return create(normalImage,selectedImage,null);
@@ -94,12 +91,26 @@ public class Button extends Node{
         return image;
     }
     
+    private void autoSetRect(){
+        if(bt_bDisable && bt_DisableImage != null){
+            this.n_rect = new Rect(this.x - bt_DisableImage.getWidth()/2, this.y - bt_DisableImage.getHeight()/2, bt_DisableImage.getWidth(), bt_DisableImage.getHeight());
+        }else if(bt_bSelected && bt_SelectedImage != null){
+            this.n_rect = new Rect(this.x - bt_SelectedImage.getWidth()/2, this.y - bt_SelectedImage.getHeight()/2, bt_SelectedImage.getWidth(), bt_SelectedImage.getHeight());
+        }else if(bt_NormalImage != null){
+            this.n_rect = new Rect(this.x - bt_NormalImage.getWidth()/2, this.y - bt_NormalImage.getHeight()/2, bt_NormalImage.getWidth(), bt_NormalImage.getHeight());
+        }else{
+            this.n_rect = Rect.ZERO;
+        }
+    }
+    
     public Button setSelected(boolean selected){
         this.bt_bSelected = selected;
+        this.autoSetRect();
         return this;
     }
     public Button setEnable(boolean enable){
         this.bt_bDisable = enable;
+        this.autoSetRect();
         return this;
     }
     public Button setLabel(String label){

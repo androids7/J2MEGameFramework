@@ -15,6 +15,7 @@ import framework.action.Sequence;
 import framework.action.Spawn;
 import framework.net.Http;
 import framework.net.IHttpEvent;
+import javax.microedition.lcdui.Image;
 /**
  *
  * @author Administrator
@@ -135,8 +136,17 @@ public class Main extends App{
         
         Button bt = Button.create("/button.png");
         bt.setLabel("Button");
-        bt.setPos(50, 50);
+        bt.setPos(450, 450);
         Scene.getCurScene().addChild(bt);
+        
+        Image[] frames = new Image[2];
+        frames[0] = Sprite.makeImage("/logo1.png");
+        frames[1] = Sprite.makeImage("/button.png");
+        Sprite sp3 = Sprite.create(frames[0]);
+        sp3.setPos(550, 450);
+        sp3.runSpriteFrames(frames,350, -1);
+        Scene.getCurScene().addChild(sp3);
+        
     }
 
     protected void onPause() {
