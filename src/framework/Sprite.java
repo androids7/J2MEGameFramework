@@ -21,6 +21,8 @@ public class Sprite extends Node{
     boolean s_bFlipedX = false;
     boolean s_bFlipedY = false;
     
+    int s_rotate = 0;
+    
     private Sprite(){}
 
     protected void drawSelf(Graphics g){
@@ -59,6 +61,7 @@ public class Sprite extends Node{
             this.n_rect = Rect.ZERO;
         }
         fiped();
+        rotate(s_rotate);
         return this;
     }
     
@@ -177,6 +180,70 @@ public class Sprite extends Node{
         }
     }
     
+    public Sprite setRotateLeft90(){
+        s_rotate += 90;
+        if(s_rotate > 180){
+            s_rotate = 180 - s_rotate;
+        }
+        rotate(90);
+        return this;
+    }
+    public Sprite setRotateRight90(){
+        s_rotate -= 90;
+        if(s_rotate < -180){
+            s_rotate = -180 - s_rotate;
+        }
+        rotate(-90);
+        return this;
+    }
+    public Sprite setRotate180(){
+        s_rotate += 180;
+        if(s_rotate > 180){
+            s_rotate = 180 - s_rotate;
+        }
+        rotate(180);
+        return this;
+    }
+    private void rotate(int r){
+        if(s_Image != null){
+            Image tmp = s_Image;
+            int w = tmp.getWidth();
+            int h = tmp.getHeight();
+            int [] rgb1 = new int[w * h];
+            int [] rgb2 = new int[w * h];
+            tmp.getRGB(rgb1, 0, w, 0, 0, w, h);
+            switch(r){
+                case 90:
+                    for(int i=0;i<w;i++){
+                        for(int j=0;j<h;j++){
+                            rgb2[h-1-j + i * h] = rgb1[i+j*w];
+                        }
+                    }
+                    s_Image = Image.createRGBImage(rgb2, h, w, true);
+                    break;
+                case -90:
+                    for(int i=0;i<w;i++){
+                        for(int j=0;j<h;j++){
+                            rgb2[j + (w - 1 - i) * h] = rgb1[i+j*w];
+                        }
+                    }
+                    s_Image = Image.createRGBImage(rgb2, h, w, true);
+                    break;
+                case -180:
+                case 180:
+                    for(int i=0;i<w;i++){
+                        for(int j=0;j<h;j++){
+                            rgb2[w-1-i + (h-1-j)*w] = rgb1[i+j*w];
+                        }
+                    }
+                    s_Image = Image.createRGBImage(rgb2, w, h, true);
+                    break;
+                default:break;
+            }
+        }
+    }
+    
+    /*
     public static Sprite createTestSprite(){
         Sprite sp = new Sprite();
         int[] rgb = new int[50*50];
@@ -187,6 +254,6 @@ public class Sprite extends Node{
         }
         sp.s_Image = Image.createRGBImage(rgb, 50, 50, true);  // true: color = 0xaarrggbb false : color = 0xrrggbb
         return sp;
-    }
+    }*/
     
 }

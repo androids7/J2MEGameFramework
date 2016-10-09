@@ -106,6 +106,6 @@ public class Scene extends Node {
         long fm = Runtime.getRuntime().freeMemory();
         long um = (tm - fm)/1024;
         msg = "memory : total->" + (tm/1024) + "k used->" + um + "k";
-        g.drawChars(msg.toCharArray(), 0, msg.length(), 8, 8 + g.getFont().getHeight() + 2, 0);
+        g.drawChars(msg.toCharArray(), 0, msg.length(), 8, 8 + g.getFont().getHeight() + 2, Graphics.TOP | Graphics.LEFT);
     }
 }
