@@ -5,6 +5,7 @@
  */
 package main;
 
+import com.sun.perseus.parser.ColorParser;
 import framework.action.MoveTo;
 import framework.action.Animation;
 import framework.*;
@@ -15,7 +16,10 @@ import framework.action.Sequence;
 import framework.action.Spawn;
 import framework.net.Http;
 import framework.net.IHttpEvent;
+import javax.microedition.lcdui.Font;
+import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
+//import javax.microedition.lcdui.game.Sprite;
 /**
  *
  * @author Administrator
@@ -127,12 +131,12 @@ public class Main extends App{
             }
         });
         
-        final long timerStartTime = System.currentTimeMillis();
+        /*final long timerStartTime = System.currentTimeMillis();
         Timer.create(2000, new Runnable() {
             public void run() {
                 System.out.println("Timer ...:"+(System.currentTimeMillis() - timerStartTime));
             }
-        },true);
+        },true);*/
         
         Button bt = Button.create("/button.png");
         bt.setLabel("Button");
@@ -140,7 +144,7 @@ public class Main extends App{
         Scene.getCurScene().addChild(bt);
         
         Image[] frames = new Image[2];
-        frames[0] = Sprite.makeImage("/logo1.png");
+        frames[0] = Sprite.makeImage("/button.png");
         frames[1] = Sprite.makeImage("/button.png");
         Sprite sp3 = Sprite.create(frames[0]);
         sp3.setPos(550, 450);
@@ -151,11 +155,28 @@ public class Main extends App{
         //sp3.setRotate180();
         //sp3.setRotateRight90();
         
-        SlideBar sb = SlideBar.create("/button.png");
+        SlideBar sb = SlideBar.create("/loadgg1.png");
         sb.setPos(350, 450);
         sb.setValue(50);
         //sb.setModel(SlideBar.MODEL_VERTICAL_TOP);
         Scene.getCurScene().addChild(sb);
+        
+        //System.out.println("sin:"+Math.sin(Math.PI/2));
+
+        final Label label = Label.createRich("  hello world!  ");
+        label.setPos(350, 350);
+        label.setFlipedY();
+        //label.setRotateCCW90();
+        Scene.getCurScene().addChild(label);
+        
+        Timer.create(2000, new Runnable() {
+            public void run() {
+                label.setString("aaaaaaaaaa");
+                label.setRotateCCW90();
+                Font f = Font.getFont(Font.FACE_SYSTEM,Font.STYLE_PLAIN, Font.SIZE_LARGE);
+                label.setFont(f);
+            }
+        }).pause();
         
     }
 

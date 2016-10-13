@@ -180,18 +180,26 @@ public class Sprite extends Node{
         }
     }
     
-    public Sprite setRotateLeft90(){
+    /**
+     * Ë³Ê±Õë
+     * @return 
+     */
+    public Sprite setRotateCW90(){
         s_rotate += 90;
         if(s_rotate > 180){
-            s_rotate = 180 - s_rotate;
+            s_rotate = 180-s_rotate;
         }
         rotate(90);
         return this;
     }
-    public Sprite setRotateRight90(){
+    /**
+     * ÄæÊ±Õë
+     * @return 
+     */
+    public Sprite setRotateCCW90(){
         s_rotate -= 90;
         if(s_rotate < -180){
-            s_rotate = -180 - s_rotate;
+            s_rotate = -180-s_rotate;
         }
         rotate(-90);
         return this;
@@ -199,7 +207,7 @@ public class Sprite extends Node{
     public Sprite setRotate180(){
         s_rotate += 180;
         if(s_rotate > 180){
-            s_rotate = 180 - s_rotate;
+            s_rotate = 180-s_rotate;
         }
         rotate(180);
         return this;
@@ -213,7 +221,7 @@ public class Sprite extends Node{
             int [] rgb2 = new int[w * h];
             tmp.getRGB(rgb1, 0, w, 0, 0, w, h);
             switch(r){
-                case 90:
+                case -90:
                     for(int i=0;i<w;i++){
                         for(int j=0;j<h;j++){
                             rgb2[h-1-j + i * h] = rgb1[i+j*w];
@@ -221,7 +229,7 @@ public class Sprite extends Node{
                     }
                     s_Image = Image.createRGBImage(rgb2, h, w, true);
                     break;
-                case -90:
+                case 90:
                     for(int i=0;i<w;i++){
                         for(int j=0;j<h;j++){
                             rgb2[j + (w - 1 - i) * h] = rgb1[i+j*w];
@@ -242,6 +250,152 @@ public class Sprite extends Node{
             }
         }
     }
+    
+    /*
+    public Sprite setRotate(int ratio){
+        if(s_Image != null){
+            Image tmp = s_Image;
+            int w = tmp.getWidth();
+            int h = tmp.getHeight();
+            int [] rgb1 = new int[w * h];
+            tmp.getRGB(rgb1, 0, w, 0, 0, w, h);
+            double cos = Math.cos(Math.toRadians(ratio));
+            double sin = Math.cos(Math.toRadians(ratio));
+            System.out.println("setRotate sin:"+sin+" cos:"+cos);
+            int w2 = (int)(w*cos + h*sin);
+            int h2 = (int)(w*sin + h*cos);
+            System.out.println("setRotate w2:"+w2+" h2:"+h2);
+            int [] rgb2 = new int[w2 * h2];
+            for(int i=0;i<w2;i++){
+                for(int j=0;j<h2;j++){
+                    rgb2[i + j*w2] = 0;
+                }
+            }
+            int x,y;
+            for(int i=0;i<w;i++){
+                for(int j=0;j<h;j++){
+                    x = (int)Math.floor((i-w/2)*cos - (j-h/2)*sin + 0.5f + w2/2.0f);
+                    y = (int)Math.floor((i-w/2)*sin + (j-h/2)*cos + 0.5f + h2/2.0f);
+                    //System.err.println("---> x="+x+" y="+y);
+                    if(x + y*w2 < rgb2.length && x + y*w2 >= 0)
+                        rgb2[x + y*w2] = rgb1[i+j*w];
+                    else
+                        System.err.println("outside rgb2 length :" + (x + y*w2));
+                }
+            }
+            
+            int left,right,up,down; 
+            
+            for(int i=0;i<w2;i++){
+                for(int j=0;j<h2;j++){
+                    if(rgb2[i +j*w2] != 0)continue;
+                    left = i - 1;
+                    right = i + 1;
+                    up = j - 1;
+                    down = j + 1;
+                    int num = 0;
+                    int a = 0;
+                    int r = 0;
+                    int g = 0;
+                    int b = 0;
+                    for(int ii=left;ii<=right && ii<w2;ii++){
+                        if(ii < 0)continue;
+                        for(int jj=up;jj<=down && jj<h2;jj++){
+                            if(jj < 0)continue;
+                            if(rgb2[ii +jj*w2] != 0){
+                                num++;
+                                a += (rgb2[ii +jj*w2] >> 8*3) & 0xff;
+                                r += (rgb2[ii +jj*w2] >> 8*2) & 0xff;
+                                g += (rgb2[ii +jj*w2] >> 8*1) & 0xff;
+                                b += (rgb2[ii +jj*w2]) & 0xff;
+                            }
+                        }
+                    }
+                    if(num >= 6){
+                        a /= num;
+                        r /= num;
+                        g /= num;
+                        b /= num;
+                        int color = (a << (8*3)) + (r << (8*2)) + (g << (8*1)) + (b);
+                        System.err.println("---> num : "+num + " color : " + color);
+                        rgb2[i +j*w2] = color;
+                    }
+                }
+            }
+            
+            left = 0;
+            right = 0;
+            up = 0;
+            down = 0; 
+            for(int i=0;i<w2;i++){
+                boolean flg = false;
+                for(int j=0;j<h2;j++){
+                    if(rgb2[i +j*w2] != 0){
+                        flg = true;
+                        break;
+                    }
+                }
+                if(flg){
+                    break;
+                }
+                up++;
+            }
+            for(int i=0;i<w2;i++){
+                boolean flg = false;
+                for(int j=h2-1;j>=0;j--){
+                    if(rgb2[i +j*w2] != 0){
+                        flg = true;
+                        break;
+                    }
+                }
+                if(flg){
+                    break;
+                }
+                down++;
+            }
+            for(int j=0;j<h2;j++){
+                boolean flg = false;
+                for(int i=0;i<w2;i++){
+                    if(rgb2[i +j*w2] != 0){
+                        flg = true;
+                        break;
+                    }
+                }
+                if(flg){
+                    break;
+                }
+                left++;
+            }
+            for(int j=0;j<h2;j++){
+                boolean flg = false;
+                for(int i=w2-1;i>=0;i++){
+                    if(rgb2[i +j*w2] != 0){
+                        flg = true;
+                        break;
+                    }
+                }
+                if(flg){
+                    break;
+                }
+                right++;
+            }
+            if(left != 0 || right != 0 ||
+                    up != 0 || down != 0){
+                rgb1 = rgb2;
+                w2 -= left - right;
+                h2 -= up - down;
+                rgb2 = new int[w2*h2];
+                for(int i=0;i<w2;i++){
+                    for(int j=0;j<h2;j++){
+                        rgb2[i+j*w2] = rgb1[i+left+(j+up)*w2];
+                    }
+                }
+            }
+            s_Image = Image.createRGBImage(rgb2, w2, h2, true);
+        }
+        return this;
+    }
+    */
     
     /*
     public static Sprite createTestSprite(){
