@@ -77,7 +77,7 @@ public /*abstract*/ class Node {
     
     protected boolean clip(Graphics g){
         if(n_b_clip && n_clip_rect != null){
-            g.clipRect(n_clip_rect.x - this.x, n_clip_rect.y - this.y, n_clip_rect.width, n_clip_rect.height);
+            g.setClip(n_clip_rect.x + this.x, n_clip_rect.y + this.y, n_clip_rect.width, n_clip_rect.height);
         }
         return n_b_clip || n_clip_rect != null;
     }
@@ -215,8 +215,9 @@ public /*abstract*/ class Node {
         }
     }
     protected void setGraphicsCip(Graphics g,int x,int y,int width,int height){
-        if(n_b_can_cip_self)
+        if(n_b_can_cip_self){
             g.setClip(x,y,width,height);
+        }
     }
     
     public Node getParent() {

@@ -138,7 +138,7 @@ public class DrawNode extends Node {
     
     void drawCircleFill(Graphics g){
         if(mLineRect != null){
-            setGraphicsCip(g,this.x + mLineRect.x - mLineRect.width/2, this.y + mLineRect.y - mLineRect.height/2, mLineRect.width+1, mLineRect.height+1);
+            //setGraphicsCip(g,this.x + mLineRect.x - mLineRect.width/2, this.y + mLineRect.y - mLineRect.height/2, mLineRect.width+1, mLineRect.height+1);
             g.setColor(mLineColor);
             g.fillRoundRect(this.x + mLineRect.x - mLineRect.width/2, 
                     this.y + mLineRect.y - mLineRect.height/2

@@ -46,10 +46,10 @@ public class Main extends App{
         node.setPos(60, 160);
         Scene.getCurScene().addChild(node);
 
-        node =  DrawNode.createCircleFill((short)60,(short)3,0xff0f00,0xff);
+        node =  DrawNode.createCircleFill((short)100,(short)3,0xffffff,0xff00ff00);
         node.setPos(50, 200);
         Scene.getCurScene().addChild(node);
-
+        
         final Sprite sp =  Sprite.create("/logo1.png");
         node.addChild(sp);
         sp.setLocalPos(0, 0);
@@ -57,7 +57,7 @@ public class Main extends App{
         final Sprite sp2 =  Sprite.create("/logo1.png");
         node.addChild(sp2);
         sp2.setLocalPos(-20, 30);
-
+        node.runAction(Repeat.create(Sequence.create(new Animation[]{MoveBy.create(0, 100, 600),MoveBy.create(0, -100, 600)})));
         final Node tmp = node;
         Animation a = MoveTo.create(300,300,2000);
         a.onCompleted = new Runnable(){
@@ -93,9 +93,9 @@ public class Main extends App{
         //node.runAction(asp);
         
         Sequence seq = Sequence.create(new Animation[]{a,b});
-        //node.runAction(seq);
-        
+        //node.runAction(seq
         //node.runAction(Repeat.create(a));
+        //node.setCliped(new Rect(-80,-80,150,120));
         node.runAction(Repeat.create(Sequence.create(new Animation[]{MoveBy.create(0, 100, 600),MoveBy.create(0, -100, 600)})));
         
         tmp.setKeyEventListener(new IKeyEvent() {
@@ -175,11 +175,11 @@ public class Main extends App{
                 label.setRotateCCW90();
                 Font f = Font.getFont(Font.FACE_SYSTEM,Font.STYLE_PLAIN, Font.SIZE_LARGE);
                 label.setFont(f);
-                Scene.getCurScene().setCliped(new Rect(0,0,400,300));
+                //Scene.getCurScene().setCliped(new Rect(0,0,400,300));
             }
         });
         
-        
+
     }
 
     protected void onPause() {
