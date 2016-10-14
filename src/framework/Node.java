@@ -29,6 +29,10 @@ public /*abstract*/ class Node {
     protected short x = 0;
     protected short y = 0;
     
+    protected Rect n_clip_rect = null;
+    boolean n_b_clip = false;
+    boolean n_b_can_cip_self = true;
+    
     protected int n_Color = 0xffffff;
     
     protected boolean n_bEnableUpdate = false;
@@ -52,6 +56,7 @@ public /*abstract*/ class Node {
                 romoveNow();
             }else{
                 if(n_bShowed && (n_parent == null || (n_parent != null && n_parent.getVisible()))){
+                    n_b_can_cip_self = !clip(g);
                     drawSelf(g);
                 }
                 drawChilds(g);
@@ -68,6 +73,13 @@ public /*abstract*/ class Node {
             node.onDraw(g);
             node = node.n_next;
         }
+    }
+    
+    protected boolean clip(Graphics g){
+        if(n_b_clip && n_clip_rect != null){
+            g.clipRect(n_clip_rect.x - this.x, n_clip_rect.y - this.y, n_clip_rect.width, n_clip_rect.height);
+        }
+        return n_b_clip || n_clip_rect != null;
     }
 
     public void addChild(Node n,short zorder){
@@ -189,7 +201,24 @@ public /*abstract*/ class Node {
     public void setRect(Rect rect){
         n_rect = rect;
     }
-
+    
+    public void setCliped(Rect rect){
+        n_clip_rect = rect;
+        setCliped(rect != null);
+    }
+    private void setCliped(boolean cliped){
+        n_b_clip = (n_clip_rect != null || cliped);
+        Node node = n_chd_head;
+        while(node != null){
+            node.setCliped(cliped);
+            node = node.n_next;
+        }
+    }
+    protected void setGraphicsCip(Graphics g,int x,int y,int width,int height){
+        if(n_b_can_cip_self)
+            g.setClip(x,y,width,height);
+    }
+    
     public Node getParent() {
         return n_parent;
     }

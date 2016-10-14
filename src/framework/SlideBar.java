@@ -33,21 +33,21 @@ public class SlideBar extends Node{
         if(s_Image != null){
             g.setColor(n_Color);
             if(s_bgImage != null){
-                g.setClip(this.x - s_bgImage.getWidth()/2, this.y - s_bgImage.getHeight()/2, s_bgImage.getWidth(), s_bgImage.getHeight());
+                setGraphicsCip(g,this.x - s_bgImage.getWidth()/2, this.y - s_bgImage.getHeight()/2, s_bgImage.getWidth(), s_bgImage.getHeight());
                 g.drawImage(s_bgImage, this.x - s_bgImage.getWidth()/2, this.y - s_bgImage.getHeight()/2, 0);
             }
             switch(s_model){
                 case MODEL_HORIZONTAL_RIGHT:
-                    g.setClip(this.x - s_Image.getWidth()/2 + s_Image.getWidth()*(100 - s_value)/100 , this.y - s_Image.getHeight()/2, s_Image.getWidth(), s_Image.getHeight());
+                    setGraphicsCip(g,this.x - s_Image.getWidth()/2 + s_Image.getWidth()*(100 - s_value)/100 , this.y - s_Image.getHeight()/2, s_Image.getWidth(), s_Image.getHeight());
                     break;
                 case MODEL_VERTICAL_TOP:
-                    g.setClip(this.x - s_Image.getWidth()/2, this.y - s_Image.getHeight()/2, s_Image.getWidth(), s_Image.getHeight()*s_value/100);
+                    setGraphicsCip(g,this.x - s_Image.getWidth()/2, this.y - s_Image.getHeight()/2, s_Image.getWidth(), s_Image.getHeight()*s_value/100);
                     break;
                 case MODEL_VERTICAL_BOTTOM:
-                    g.setClip(this.x - s_Image.getWidth()/2 , this.y - s_Image.getHeight()/2 + s_Image.getHeight()*(100 - s_value)/100, s_Image.getWidth(), s_Image.getHeight());
+                    setGraphicsCip(g,this.x - s_Image.getWidth()/2 , this.y - s_Image.getHeight()/2 + s_Image.getHeight()*(100 - s_value)/100, s_Image.getWidth(), s_Image.getHeight());
                     break;
                 default:
-                    g.setClip(this.x - s_Image.getWidth()/2, this.y - s_Image.getHeight()/2, s_Image.getWidth()*s_value/100, s_Image.getHeight());
+                    setGraphicsCip(g,this.x - s_Image.getWidth()/2, this.y - s_Image.getHeight()/2, s_Image.getWidth()*s_value/100, s_Image.getHeight());
                     break;
             }
             g.drawImage(s_Image, this.x - s_Image.getWidth()/2, this.y - s_Image.getHeight()/2, 0);

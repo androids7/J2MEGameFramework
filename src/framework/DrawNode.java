@@ -99,21 +99,22 @@ public class DrawNode extends Node {
             Font font = this.getFont();
             int w = font.stringWidth(mString);
             int h = font.getHeight();
-            g.setClip(this.x, this.x,w,h);
+            if(n_b_can_cip_self)
+                g.setClip(this.x, this.x,w,h);
             g.setColor(n_Color);
             g.drawString(mString,this.x, this.x,0);
         }
     }
     
     void drawRect(Graphics g){
-        g.setClip(this.x + n_rect.x - n_rect.width/2, this.y + n_rect.y - n_rect.height/2, n_rect.width+1, n_rect.height+1);
+        setGraphicsCip(g,this.x + n_rect.x - n_rect.width/2, this.y + n_rect.y - n_rect.height/2, n_rect.width+1, n_rect.height+1);
         g.setColor(n_Color);
         g.drawRect(this.x + n_rect.x - n_rect.width/2, this.y + n_rect.y - n_rect.height/2, n_rect.width, n_rect.height);
     }
     
     void drawRectFill(Graphics g){
         if(mLineRect != null){
-            g.setClip(this.x + mLineRect.x - mLineRect.width/2, this.y + mLineRect.y - mLineRect.height/2, mLineRect.width, mLineRect.height);
+            setGraphicsCip(g,this.x + mLineRect.x - mLineRect.width/2, this.y + mLineRect.y - mLineRect.height/2, mLineRect.width, mLineRect.height);
             g.setColor(mLineColor);
             g.fillRect(this.x + mLineRect.x - mLineRect.width/2, this.y + mLineRect.y - mLineRect.height/2, mLineRect.width, mLineRect.height);
             g.setColor(n_Color);
@@ -121,7 +122,7 @@ public class DrawNode extends Node {
                     this.y + n_rect.y - n_rect.height/2 - (mLineRect.height - n_rect.height)/2,
                     n_rect.width, n_rect.height);
         }else{
-            g.setClip(this.x + mLineRect.x, this.y + mLineRect.y, mLineRect.width, mLineRect.height);
+            setGraphicsCip(g,this.x + mLineRect.x, this.y + mLineRect.y, mLineRect.width, mLineRect.height);
             g.setColor(n_Color);
             g.fillRect(this.x + n_rect.x-n_rect.width/2,
                     this.y + n_rect.y - n_rect.height/2,
@@ -130,14 +131,14 @@ public class DrawNode extends Node {
     }
     
     void drawCircle(Graphics g){
-        g.setClip(this.x + n_rect.x - n_rect.width/2, this.y + n_rect.y - n_rect.height/2, n_rect.width+1, n_rect.height+1);
+        setGraphicsCip(g,this.x + n_rect.x - n_rect.width/2, this.y + n_rect.y - n_rect.height/2, n_rect.width+1, n_rect.height+1);
         g.setColor(n_Color);
         g.drawRoundRect(this.x + n_rect.x - n_rect.width/2, this.y + n_rect.y - n_rect.height/2, n_rect.width, n_rect.height,n_rect.width, n_rect.height);
     }
     
     void drawCircleFill(Graphics g){
         if(mLineRect != null){
-            g.setClip(this.x + mLineRect.x - mLineRect.width/2, this.y + mLineRect.y - mLineRect.height/2, mLineRect.width+1, mLineRect.height+1);
+            setGraphicsCip(g,this.x + mLineRect.x - mLineRect.width/2, this.y + mLineRect.y - mLineRect.height/2, mLineRect.width+1, mLineRect.height+1);
             g.setColor(mLineColor);
             g.fillRoundRect(this.x + mLineRect.x - mLineRect.width/2, 
                     this.y + mLineRect.y - mLineRect.height/2
@@ -147,7 +148,7 @@ public class DrawNode extends Node {
                     , this.y + n_rect.y - mLineRect.height/2
                     , n_rect.width, n_rect.height,n_rect.width, n_rect.height);
         }else{
-            g.setClip(this.x + n_rect.x - n_rect.width/2, this.y + n_rect.y - n_rect.height/2, n_rect.width+1, n_rect.height+1);
+            setGraphicsCip(g,this.x + n_rect.x - n_rect.width/2, this.y + n_rect.y - n_rect.height/2, n_rect.width+1, n_rect.height+1);
             g.setColor(n_Color);
             g.fillRoundRect(this.x + n_rect.x - n_rect.width/2 , 
                     this.y + n_rect.y - n_rect.height/2, 

@@ -31,15 +31,15 @@ public class Button extends Node{
     private Button (){}
     protected void drawSelf(Graphics g){
         if(bt_bDisable && bt_DisableImage != null){
-            g.setClip(this.x - bt_DisableImage.getWidth()/2, this.y - bt_DisableImage.getHeight()/2, bt_DisableImage.getWidth(), bt_DisableImage.getHeight());
+            setGraphicsCip(g,this.x - bt_DisableImage.getWidth()/2, this.y - bt_DisableImage.getHeight()/2, bt_DisableImage.getWidth(), bt_DisableImage.getHeight());
             g.setColor(n_Color);
             g.drawImage(bt_DisableImage, this.x - bt_DisableImage.getWidth()/2, this.y - bt_DisableImage.getHeight()/2, 0);
         }else if(bt_bSelected && bt_SelectedImage != null){
-            g.setClip(this.x - bt_SelectedImage.getWidth()/2, this.y - bt_SelectedImage.getHeight()/2, bt_SelectedImage.getWidth(), bt_SelectedImage.getHeight());
+            setGraphicsCip(g,this.x - bt_SelectedImage.getWidth()/2, this.y - bt_SelectedImage.getHeight()/2, bt_SelectedImage.getWidth(), bt_SelectedImage.getHeight());
             g.setColor(n_Color);
             g.drawImage(bt_SelectedImage, this.x - bt_SelectedImage.getWidth()/2, this.y - bt_SelectedImage.getHeight()/2, 0);
         }else if(bt_NormalImage != null){
-            g.setClip(this.x - bt_NormalImage.getWidth()/2, this.y - bt_NormalImage.getHeight()/2, bt_NormalImage.getWidth(), bt_NormalImage.getHeight());
+            setGraphicsCip(g,this.x - bt_NormalImage.getWidth()/2, this.y - bt_NormalImage.getHeight()/2, bt_NormalImage.getWidth(), bt_NormalImage.getHeight());
             g.setColor(n_Color);
             g.drawImage(bt_NormalImage, this.x - bt_NormalImage.getWidth()/2, this.y - bt_NormalImage.getHeight()/2, 0);
         }
@@ -47,7 +47,7 @@ public class Button extends Node{
             Font font = getFont();
             int w = font.stringWidth(bt_Label);
             int h = font.getHeight();
-            g.setClip(this.x - w/2 + bt_LabelOffsetX, this.x - h/2 + bt_LabelOffsetY,w,h);
+            setGraphicsCip(g,this.x - w/2 + bt_LabelOffsetX, this.x - h/2 + bt_LabelOffsetY,w,h);
             g.setColor(n_Color);
             g.drawString(bt_Label,this.x - w/2 + bt_LabelOffsetX, this.x - h/2 + bt_LabelOffsetY,0);
         }

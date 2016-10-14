@@ -39,7 +39,7 @@ public class Label extends Node{
 
     protected void drawSelf(Graphics g){
         if(l_Image != null){
-            g.setClip(this.x - l_Image.getWidth()/2, this.y - l_Image.getHeight()/2, l_Image.getWidth(), l_Image.getHeight());
+            setGraphicsCip(g,this.x - l_Image.getWidth()/2, this.y - l_Image.getHeight()/2, l_Image.getWidth(), l_Image.getHeight());
             //g.setColor(n_Color);
             g.drawImage(l_Image, this.x - l_Image.getWidth()/2, this.y - l_Image.getHeight()/2, 0);
         }
@@ -221,6 +221,7 @@ public class Label extends Node{
         l_content = str;
         l_Image = Image.createImage(img, 0, 0, maxWidth, maxHeight, 0);
         l_str_color = str_color;
+        l_bg_color = bg_color;
         //fiped();
         //rotate(l_rotate);
         transform();
@@ -265,13 +266,18 @@ public class Label extends Node{
                 maxWidth = w;
             }
         }
-        if(start > 0 && start < str.length()){
+        if(start < str.length()){
             if(index == res.length){
                 String[] tmp = res;
                 res = new String[index + 1];
                 System.arraycopy(tmp, 0, res, 0, index);
             }
-            res[index++] = str.substring(start);
+            String sub = str.substring(start);
+            res[index++] = sub;
+            int w = l_font.stringWidth(sub);
+            if(maxWidth < w){
+                maxWidth = w;
+            }
         }
         int h = l_font.getHeight();
         int maxHeight = h  * index;
@@ -343,7 +349,7 @@ public class Label extends Node{
                 if(!l_b_rich)
                     initString(l_font, l_content, l_str_color, l_bg_color);
                 else
-                    initRichString(l_font,l_anchor,l_content,l_bgImage,l_str_color);
+                    initRichString(l_font,l_anchor,l_content,l_str_color,l_bg_color);
             }
         }
         return this;

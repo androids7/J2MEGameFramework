@@ -175,8 +175,10 @@ public class Main extends App{
                 label.setRotateCCW90();
                 Font f = Font.getFont(Font.FACE_SYSTEM,Font.STYLE_PLAIN, Font.SIZE_LARGE);
                 label.setFont(f);
+                Scene.getCurScene().setCliped(new Rect(0,0,400,300));
             }
-        }).pause();
+        });
+        
         
     }
 
