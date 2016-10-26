@@ -146,11 +146,11 @@ public /*abstract*/ class Node {
         return n_tag;
     }
 
-    public void onEnter() {
+    protected void onEnter() {
         
     }
 
-    public void onExit() {
+    protected void onExit() {
         
     }
 

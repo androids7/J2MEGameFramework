@@ -19,6 +19,9 @@ import framework.net.IHttpEvent;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
+import javax.microedition.rms.RecordStore;
+import javax.microedition.rms.RecordStoreException;
+import javax.microedition.rms.RecordStoreNotOpenException;
 //import javax.microedition.lcdui.game.Sprite;
 /**
  *
@@ -178,8 +181,17 @@ public class Main extends App{
                 //Scene.getCurScene().setCliped(new Rect(0,0,400,300));
             }
         });
-        
-
+        new Thread(){
+            public void run(){
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+                //testRecordStore();
+                System.err.println("========== : " + fromatNumber(1896660,0));
+            }
+        }.start();
     }
 
     protected void onPause() {
@@ -192,5 +204,80 @@ public class Main extends App{
 
     protected void onDestroy() {
         
+    }
+    
+    void testRecordStore(){
+        long t1 = System.currentTimeMillis();
+        LocalData ld = LocalData.create("myLocalData3");
+        
+        /*boolean exists = ld.contains("key1");
+        System.err.println("exists key1 : " + exists);
+        if(!exists){
+            ld.addKey("key1", "abcdefg".getBytes());
+        }else{
+            byte[] bs = ld.getKey("key1");
+            if(bs != null){
+                System.err.println("====  bs : " + new String(bs));
+            }else{
+                System.err.println("====  bs is null");
+            }
+        }*/
+        
+        if(ld.contains("bKey")){
+            System.err.println("exists bKey : " + ld.getBoolean("bKey", false));
+        }else{
+            System.err.println("not exists bKey and set ");
+            ld.setBoolean("bKey", true);
+        }
+        if(ld.contains("lKey")){
+            System.err.println("exists lKey : " + ld.getLong("lKey", 1));
+        }else{
+            System.err.println("not exists lKey and set ");
+            ld.setLong("lKey", 333333);
+        }
+        if(ld.contains("iKey")){
+            System.err.println("exists iKey : " + ld.getInt("iKey", 1));
+        }else{
+            System.err.println("not exists iKey and set ");
+            ld.setInt("iKey", 2222);
+        }
+        if(ld.contains("sKey")){
+            System.err.println("exists sKey : " + ld.getString("sKey", "nil"));
+        }else{
+            System.err.println("not exists sKey and set ");
+            ld.setString("sKey", "nnnnnnnnn");
+        }
+        //ld.clean();
+        System.err.println("user time : " + (System.currentTimeMillis()-t1));
+    }
+    
+    public static String fromatNumber(long value,int ratio){
+        String res = "";
+        switch(ratio){
+            case 0:
+                if(value > 10000){
+                    long v1 = value/10000;
+                    long v2 = value%10000;
+                    v2 = v2/100;
+                    res = v1+"."+v2+"Íò";
+                }else{
+                    res += value;
+                }
+                break;
+            case 1:
+                if(value > 1000000){
+                    long v1 = value/1000000;
+                    long v2 = value%1000000;
+                    v2 = v2/10000;
+                    res = v1+"."+v2+"°ÙÍò";
+                }else{
+                    res += value;
+                }
+                break;
+            default:
+                res += value;
+                break;
+        }
+        return res;
     }
 }

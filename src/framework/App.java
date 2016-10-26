@@ -17,6 +17,7 @@ public abstract class App extends MIDlet{
     protected void startApp() throws MIDletStateChangeException {
         System.out.println("... startApp ...");
         mApp = this;
+        initApp();
         UiThread.getInstance().start();
         UiThread.getInstance().runOnUiThread(new Runnable(){
             public void run(){
@@ -24,6 +25,13 @@ public abstract class App extends MIDlet{
                 resume();
             }
         });
+    }
+    
+    private void initApp(){
+        String fps = this.getAppProperty("p_fps");
+        if(fps != null){
+            Configs.fps = Short.parseShort(fps);
+        }
     }
 
     protected void pauseApp() {
@@ -48,6 +56,11 @@ public abstract class App extends MIDlet{
             bRuning = true;
             onResume();
         }
+    }
+    
+    public String getAppProperty(String name,String def){
+        String property = this.getAppProperty(name);
+        return property == null ? def : property;
     }
     
     abstract protected void onStart();
