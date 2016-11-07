@@ -12,7 +12,7 @@ import javax.microedition.rms.RecordStoreException;
 
 /**
  *
- * @author Administrator
+ * @author czl
  */
 public class LocalData {
     

@@ -32,25 +32,51 @@ public class SlideBar extends Node{
     protected void drawSelf(Graphics g){
         if(s_Image != null){
             g.setColor(n_Color);
+            
+            int xx = this.x;
+            int yy = this.y;
+            int xx2 = this.x;
+            int yy2 = this.y;
+            if((this.n_align_model & Node.ALIGN_H_LEFT) != 0){
+                
+            }else if((this.n_align_model & Node.ALIGN_H_RIGHT) != 0){
+                xx -= s_Image.getWidth();
+                xx2 -= s_bgImage != null ? this.x - s_bgImage.getWidth() : 0;
+            }else{
+                xx -= s_Image.getWidth()/2;
+                xx2 -= s_bgImage != null ? this.x - s_bgImage.getWidth()/2 : 0;
+            }
+            if((this.n_align_model & Node.ALIGN_V_TOP) != 0){
+                
+            }else if((this.n_align_model & Node.ALIGN_V_BOTTOM) != 0){
+                yy -= s_Image.getHeight();
+                yy2 -= s_bgImage != null ? this.x - s_bgImage.getHeight() : 0;
+            }else{
+                yy -= s_Image.getHeight()/2;
+                yy2 -= s_bgImage != null ? this.x - s_bgImage.getHeight()/2 : 0;
+            }
+            
             if(s_bgImage != null){
-                setGraphicsCip(g,this.x - s_bgImage.getWidth()/2, this.y - s_bgImage.getHeight()/2, s_bgImage.getWidth(), s_bgImage.getHeight());
-                g.drawImage(s_bgImage, this.x - s_bgImage.getWidth()/2, this.y - s_bgImage.getHeight()/2, 0);
+                setGraphicsCip(g,xx2,yy2, s_bgImage.getWidth(), s_bgImage.getHeight());
+                g.drawImage(s_bgImage,xx2,yy2, 0);
+                drawCell++;
             }
             switch(s_model){
                 case MODEL_HORIZONTAL_RIGHT:
-                    setGraphicsCip(g,this.x - s_Image.getWidth()/2 + s_Image.getWidth()*(100 - s_value)/100 , this.y - s_Image.getHeight()/2, s_Image.getWidth(), s_Image.getHeight());
+                    setGraphicsCip(g,xx + s_Image.getWidth()*(100 - s_value)/100 ,yy, s_Image.getWidth(), s_Image.getHeight());
                     break;
                 case MODEL_VERTICAL_TOP:
-                    setGraphicsCip(g,this.x - s_Image.getWidth()/2, this.y - s_Image.getHeight()/2, s_Image.getWidth(), s_Image.getHeight()*s_value/100);
+                    setGraphicsCip(g,xx,yy, s_Image.getWidth(), s_Image.getHeight()*s_value/100);
                     break;
                 case MODEL_VERTICAL_BOTTOM:
-                    setGraphicsCip(g,this.x - s_Image.getWidth()/2 , this.y - s_Image.getHeight()/2 + s_Image.getHeight()*(100 - s_value)/100, s_Image.getWidth(), s_Image.getHeight());
+                    setGraphicsCip(g,xx,yy + s_Image.getHeight()*(100 - s_value)/100, s_Image.getWidth(), s_Image.getHeight());
                     break;
                 default:
-                    setGraphicsCip(g,this.x - s_Image.getWidth()/2, this.y - s_Image.getHeight()/2, s_Image.getWidth()*s_value/100, s_Image.getHeight());
+                    setGraphicsCip(g,xx,yy, s_Image.getWidth()*s_value/100, s_Image.getHeight());
                     break;
             }
-            g.drawImage(s_Image, this.x - s_Image.getWidth()/2, this.y - s_Image.getHeight()/2, 0);
+            g.drawImage(s_Image,xx,yy, 0);
+            drawCell++;
         }
     }
     

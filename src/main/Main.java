@@ -16,6 +16,8 @@ import framework.action.Sequence;
 import framework.action.Spawn;
 import framework.net.Http;
 import framework.net.IHttpEvent;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
@@ -32,7 +34,7 @@ public class Main extends App{
     protected void onStart() {
         
         Scene.run(new Scene());
-        
+
         DrawNode node =  DrawNode.createLabel("aaaaa");
         node.setPos((short)100, (short)50);
         node.setColor(0xff00ff);
@@ -41,8 +43,10 @@ public class Main extends App{
         node =  DrawNode.createRect(new Rect(20,60,30,30));
         Scene.getCurScene().addChild(node);
 
-        node =  DrawNode.createRectFill(new Rect(0,0,40,30),(short)3,0xffff00,0xff);
+        node =  DrawNode.createRectFill(new Rect(0,0,40,40),(short)3,0xffff00,0xff0000);
         node.setPos(80, 120);
+        //node.setAlignModel(Node.ALIGN_H_LEFT,Node.ALIGN_V_TOP);
+        node.setAlignModel(Node.ALIGN_H_LEFT,Node.ALIGN_V_BOTTOM);
         Scene.getCurScene().addChild(node);
 
         node =  DrawNode.createCircle((short)35);
@@ -52,7 +56,7 @@ public class Main extends App{
         node =  DrawNode.createCircleFill((short)100,(short)3,0xffffff,0xff00ff00);
         node.setPos(50, 200);
         Scene.getCurScene().addChild(node);
-        
+
         final Sprite sp =  Sprite.create("/logo1.png");
         node.addChild(sp);
         sp.setLocalPos(0, 0);
@@ -94,13 +98,13 @@ public class Main extends App{
         asp.addAction(a);
         asp.addAction(b);
         //node.runAction(asp);
-        
+
         Sequence seq = Sequence.create(new Animation[]{a,b});
         //node.runAction(seq
         //node.runAction(Repeat.create(a));
         //node.setCliped(new Rect(-80,-80,150,120));
         node.runAction(Repeat.create(Sequence.create(new Animation[]{MoveBy.create(0, 100, 600),MoveBy.create(0, -100, 600)})));
-        
+
         tmp.setKeyEventListener(new IKeyEvent() {
             public boolean onKeyDown(int keyCode) {
                 System.out.println("tmp keyDown : " + keyCode);
@@ -133,19 +137,19 @@ public class Main extends App{
                 return true;
             }
         });
-        
+
         /*final long timerStartTime = System.currentTimeMillis();
         Timer.create(2000, new Runnable() {
             public void run() {
                 System.out.println("Timer ...:"+(System.currentTimeMillis() - timerStartTime));
             }
         },true);*/
-        
+
         Button bt = Button.create("/button.png");
         bt.setLabel("Button");
         bt.setPos(450, 450);
         Scene.getCurScene().addChild(bt);
-        
+
         Image[] frames = new Image[2];
         frames[0] = Sprite.makeImage("/button.png");
         frames[1] = Sprite.makeImage("/button.png");
@@ -157,13 +161,13 @@ public class Main extends App{
         //sp3.setRotateLeft90();
         //sp3.setRotate180();
         //sp3.setRotateRight90();
-        
+
         SlideBar sb = SlideBar.create("/loadgg1.png");
         sb.setPos(350, 450);
         sb.setValue(50);
         //sb.setModel(SlideBar.MODEL_VERTICAL_TOP);
         Scene.getCurScene().addChild(sb);
-        
+
         //System.out.println("sin:"+Math.sin(Math.PI/2));
 
         final Label label = Label.createRich("  hello world!  ");
@@ -172,26 +176,31 @@ public class Main extends App{
         //label.setRotateCCW90();
         Scene.getCurScene().addChild(label);
         
-        Timer.create(2000, new Runnable() {
-            public void run() {
-                label.setString("aaaaaaaaaa");
-                label.setRotateCCW90();
-                Font f = Font.getFont(Font.FACE_SYSTEM,Font.STYLE_PLAIN, Font.SIZE_LARGE);
-                label.setFont(f);
-                //Scene.getCurScene().setCliped(new Rect(0,0,400,300));
-            }
-        });
-        new Thread(){
-            public void run(){
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-                //testRecordStore();
-                System.err.println("========== : " + fromatNumber(1896660,0));
-            }
-        }.start();
+        /*byte [] data = null;
+        try{
+            InputStream in = App.getInstance().getClass().getResourceAsStream("/world.txt");
+            int len = in.available();
+            data = new byte[len];
+            in.read(data);
+            in.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        FNTfont fnt = FNTfont.create("/number02.fnt");
+        String u8 = null;
+        try {
+            //Image img = fnt.getCharImage('9');
+            u8 = new String(data,"utf8");
+            System.err.println("+++++++++++:"+u8);
+        } catch (UnsupportedEncodingException ex) {
+            ex.printStackTrace();
+        }
+        //Image img = fnt.getUTF8CharImage(u8);
+        Image img = fnt.getCharImage('8');
+        Sprite fntSp = Sprite.create(img);
+        Scene.getCurScene().addChild(fntSp);
+        fntSp.setPos(20, 20);*/
     }
 
     protected void onPause() {

@@ -30,26 +30,67 @@ public class Button extends Node{
     
     private Button (){}
     protected void drawSelf(Graphics g){
+        int w = this.n_rect.width;
+        int h = this.n_rect.height;
+        int xx = this.x;
+        int yy = this.y;
+        if((this.n_align_model & Node.ALIGN_H_LEFT) != 0){
+
+        }else if((this.n_align_model & Node.ALIGN_H_RIGHT) != 0){
+            xx -= w;
+        }else{
+            xx -= w/2;
+        }
+        if((this.n_align_model & Node.ALIGN_V_TOP) != 0){
+
+        }else if((this.n_align_model & Node.ALIGN_V_BOTTOM) != 0){
+            yy -= h;
+        }else{
+            yy -= h/2;
+        }
+        
+        
         if(bt_bDisable && bt_DisableImage != null){
-            setGraphicsCip(g,this.x - bt_DisableImage.getWidth()/2, this.y - bt_DisableImage.getHeight()/2, bt_DisableImage.getWidth(), bt_DisableImage.getHeight());
+            setGraphicsCip(g,xx, yy, bt_DisableImage.getWidth(), bt_DisableImage.getHeight());
             g.setColor(n_Color);
-            g.drawImage(bt_DisableImage, this.x - bt_DisableImage.getWidth()/2, this.y - bt_DisableImage.getHeight()/2, 0);
+            g.drawImage(bt_DisableImage,xx,yy, 0);
+            drawCell++;
         }else if(bt_bSelected && bt_SelectedImage != null){
-            setGraphicsCip(g,this.x - bt_SelectedImage.getWidth()/2, this.y - bt_SelectedImage.getHeight()/2, bt_SelectedImage.getWidth(), bt_SelectedImage.getHeight());
+            setGraphicsCip(g,xx,yy, bt_SelectedImage.getWidth(), bt_SelectedImage.getHeight());
             g.setColor(n_Color);
-            g.drawImage(bt_SelectedImage, this.x - bt_SelectedImage.getWidth()/2, this.y - bt_SelectedImage.getHeight()/2, 0);
+            g.drawImage(bt_SelectedImage,xx,yy, 0);
+            drawCell++;
         }else if(bt_NormalImage != null){
-            setGraphicsCip(g,this.x - bt_NormalImage.getWidth()/2, this.y - bt_NormalImage.getHeight()/2, bt_NormalImage.getWidth(), bt_NormalImage.getHeight());
+            setGraphicsCip(g,xx,yy, bt_NormalImage.getWidth(), bt_NormalImage.getHeight());
             g.setColor(n_Color);
-            g.drawImage(bt_NormalImage, this.x - bt_NormalImage.getWidth()/2, this.y - bt_NormalImage.getHeight()/2, 0);
+            g.drawImage(bt_NormalImage,xx,yy, 0);
+            drawCell++;
         }
         if(bt_Label != null && !bt_Label.equals("")){
             Font font = getFont();
-            int w = font.stringWidth(bt_Label);
-            int h = font.getHeight();
-            setGraphicsCip(g,this.x - w/2 + bt_LabelOffsetX, this.x - h/2 + bt_LabelOffsetY,w,h);
+            w = font.stringWidth(bt_Label);
+            h = font.getHeight();
+            xx = this.x;
+            yy = this.y;
+            if((this.n_align_model & Node.ALIGN_H_LEFT) != 0){
+
+            }else if((this.n_align_model & Node.ALIGN_H_RIGHT) != 0){
+                xx -= w;
+            }else{
+                xx -= w/2;
+            }
+            if((this.n_align_model & Node.ALIGN_V_TOP) != 0){
+
+            }else if((this.n_align_model & Node.ALIGN_V_BOTTOM) != 0){
+                yy -= h;
+            }else{
+                yy -= h/2;
+            }
+            
+            setGraphicsCip(g,xx + bt_LabelOffsetX, yy + bt_LabelOffsetY,w,h);
             g.setColor(n_Color);
-            g.drawString(bt_Label,this.x - w/2 + bt_LabelOffsetX, this.x - h/2 + bt_LabelOffsetY,0);
+            g.drawString(bt_Label,xx + bt_LabelOffsetX, yy + bt_LabelOffsetY,0);
+            drawCell++;
         }
     }
  

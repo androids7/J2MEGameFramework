@@ -15,7 +15,7 @@ import javax.microedition.media.Player;
 
 /**
  *
- * @author Administrator
+ * @author czl
  */
 public class Res {
     
@@ -39,13 +39,13 @@ public class Res {
     static Hashtable res_map = new Hashtable();         // key:String value:Integer
     
     public static final int RES_TYPE_G_IMG = 100000;
-    public static final int RES_TYPE_C_IMG = 010000;
+    public static final int RES_TYPE_C_IMG = 10000;
     
     public static final int RES_TYPE_G_PLAYER = 200000;
-    public static final int RES_TYPE_C_PLAYER = 020000;
+    public static final int RES_TYPE_C_PLAYER = 20000;
     
     public static final int RES_TYPE_G_OTHER = 300000;
-    public static final int RES_TYPE_C_OTHER = 030000;
+    public static final int RES_TYPE_C_OTHER = 30000;
     
     public static void removeAll(){
         c_imgs = new Image[5];
@@ -149,7 +149,7 @@ public class Res {
         }
     }
     
-    static void addImageToG(Image img,String name){
+    public static void addImageToG(Image img,String name){
         name = "#"+name;
         if(res_map.containsKey(name)){
             System.err.println("add res error (exists) :"+name);
@@ -168,7 +168,7 @@ public class Res {
         res_map.put(name,new Integer(RES_TYPE_G_IMG+g_add_img_index));
         g_imgs[g_add_img_index++] = img;
     }
-    static void addImageToC(Image img,String name){
+    public static void addImageToC(Image img,String name){
         name = "#"+name;
         if(res_map.containsKey(name)){
             System.err.println("add res error (exists) :"+name);
@@ -197,10 +197,11 @@ public class Res {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
+            System.err.println("addImageRes error:"+path);
         }
     }
     
-    static void addPlayerToG(Player player,String name){
+    public static void addPlayerToG(Player player,String name){
         name = "#"+name;
         if(res_map.containsKey(name)){
             System.err.println("add res error (exists) :"+name);
@@ -219,7 +220,7 @@ public class Res {
         res_map.put(name,new Integer(RES_TYPE_G_PLAYER+g_add_player_index));
         g_player[g_add_player_index++] = player;
     }
-    static void addPlayerToC(Player player,String name){
+    public static void addPlayerToC(Player player,String name){
         name = "#"+name;
         if(res_map.containsKey(name)){
             System.err.println("add res error (exists) :"+name);
@@ -262,7 +263,7 @@ public class Res {
         }
     }
     
-    static void addOtherToG(byte[] bs,String name){
+    public static void addOtherToG(byte[] bs,String name){
         name = "#"+name;
         if(res_map.containsKey(name)){
             System.err.println("add res error (exists) :"+name);
@@ -281,7 +282,7 @@ public class Res {
         res_map.put(name,new Integer(RES_TYPE_G_OTHER+g_add_byte_index));
         g_bytes[g_add_byte_index++] = bs;
     }
-    static void addOtherToC(byte[] bs,String name){
+    public static void addOtherToC(byte[] bs,String name){
         name = "#"+name;
         if(res_map.containsKey(name)){
             System.err.println("add res error (exists) :"+name);

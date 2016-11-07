@@ -27,9 +27,27 @@ public class Sprite extends Node{
 
     protected void drawSelf(Graphics g){
         if(s_Image != null){
-            setGraphicsCip(g,this.x - s_Image.getWidth()/2, this.y - s_Image.getHeight()/2, s_Image.getWidth(), s_Image.getHeight());
+            int xx = this.x;
+            int yy = this.y;
+            if((this.n_align_model & Node.ALIGN_H_LEFT) != 0){
+                
+            }else if((this.n_align_model & Node.ALIGN_H_RIGHT) != 0){
+                xx -= s_Image.getWidth();
+            }else{
+                xx -= s_Image.getWidth()/2;
+            }
+            if((this.n_align_model & Node.ALIGN_V_TOP) != 0){
+                
+            }else if((this.n_align_model & Node.ALIGN_V_BOTTOM) != 0){
+                yy -= s_Image.getHeight();
+            }else{
+                yy -= s_Image.getHeight()/2;
+            }
+            
+            setGraphicsCip(g,xx,yy, s_Image.getWidth(), s_Image.getHeight());
             g.setColor(n_Color);
-            g.drawImage(s_Image, this.x - s_Image.getWidth()/2, this.y - s_Image.getHeight()/2, 0);
+            g.drawImage(s_Image,xx,yy, 0);
+            drawCell++;
         }
     }
     
@@ -52,6 +70,52 @@ public class Sprite extends Node{
         }
         return img;
     }
+    public static Image makeBatchImage(Image img,int wnum,int hnum){
+        if(img != null && wnum > 0 && hnum > 0){
+            int w = img.getWidth();
+            int h = img.getHeight();
+            int[] colors = new int[w * h];
+            img.getRGB(colors, 0, w, 0, 0, w, h);
+            
+            int nw = w*wnum;
+            int nh = h*hnum;
+            int[] ncolors = new int[nw * nh];
+
+            for(int i=0;i<nw;i++){
+                for(int j=0;j<nh;j++){
+                    ncolors[i + j * nw] = colors[i % w + (j % h) *w];
+                }
+            }
+            return Image.createRGBImage(ncolors, nw, nh, true);
+        }else{
+            return null;
+        }
+    }
+    public static Image makeBatchImage(String file,int wnum,int hnum){
+        return makeBatchImage(makeImage(file),wnum,hnum);
+    }
+    public static Image makeBatchImageLimit(Image img,int wleng,int hleng){
+        if(img != null && wleng > 0 && hleng > 0){
+            int w = img.getWidth();
+            int h = img.getHeight();
+            int[] colors = new int[w * h];
+            img.getRGB(colors, 0, w, 0, 0, w, h);
+
+            int[] ncolors = new int[wleng * hleng];
+
+            for(int i=0;i<wleng;i++){
+                for(int j=0;j<hleng;j++){
+                    ncolors[i + j * wleng] = colors[i % w + (j % h) *w];
+                }
+            }
+            return Image.createRGBImage(ncolors, wleng, hleng, true);
+        }else{
+            return null;
+        }
+    }
+    public static Image makeBatchImageLimit(String file,int wnum,int hnum){
+        return makeBatchImageLimit(makeImage(file),wnum,hnum);
+    }
     
     public Sprite setImage(Image image){
         this.s_Image = image;
@@ -67,6 +131,22 @@ public class Sprite extends Node{
     
     public Image getImage(){
         return this.s_Image;
+    }
+    
+    public Sprite clone(){
+        Sprite sp = new Sprite();
+        sp.s_Frames = this.s_Frames;
+        sp.s_FrameTimes = this.s_FrameTimes;
+        sp.s_FrameCurDelayTime = this.s_FrameCurDelayTime;
+        sp.s_FrameTotalDelayTime = this.s_FrameTotalDelayTime;
+        sp.s_curFrameIndex = this.s_curFrameIndex;
+        sp.s_bFlipedX = this.s_bFlipedX;
+        sp.s_bFlipedY = this.s_bFlipedY;
+        sp.s_rotate = this.s_rotate;
+        sp.x = this.x;
+        sp.y = this.y;
+        sp.setImage(this.s_Image);
+        return sp;
     }
     
     /**

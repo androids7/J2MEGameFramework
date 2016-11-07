@@ -32,7 +32,7 @@ public class DrawNode extends Node {
         node.n_rect = rect;
         return node;
     }
-    public static DrawNode createRectFill(Rect rect,short lineWidth,int colorLine,int colorFill){
+    public static DrawNode createRectFill(Rect rect,int lineWidth,int colorLine,int colorFill){
         DrawNode node = new DrawNode();
         node.mModel = 2;
         node.n_rect = rect;
@@ -55,7 +55,7 @@ public class DrawNode extends Node {
         node.n_rect.height = r;
         return node;
     }
-    public static DrawNode createCircleFill(short r,short lineWidth,int colorLine,int colorFill){
+    public static DrawNode createCircleFill(int r,int lineWidth,int colorLine,int colorFill){
         DrawNode node = new DrawNode();
         node.mModel = 4;
         node.n_rect = Rect.ZERO.clone();
@@ -99,60 +99,191 @@ public class DrawNode extends Node {
             Font font = this.getFont();
             int w = font.stringWidth(mString);
             int h = font.getHeight();
-            if(n_b_can_cip_self)
-                g.setClip(this.x, this.x,w,h);
+            
+            int xx = this.x;
+            int yy = this.y;
+            if((this.n_align_model & Node.ALIGN_H_LEFT) != 0){
+                
+            }else if((this.n_align_model & Node.ALIGN_H_RIGHT) != 0){
+                xx -= w;
+            }else{
+                xx -= w/2;
+            }
+            if((this.n_align_model & Node.ALIGN_V_TOP) != 0){
+                
+            }else if((this.n_align_model & Node.ALIGN_V_BOTTOM) != 0){
+                yy -= h;
+            }else{
+                yy -= h/2;
+            }
+            
+            setGraphicsCip(g,xx, yy,w,h);
             g.setColor(n_Color);
-            g.drawString(mString,this.x, this.x,0);
+            g.drawString(mString,xx, yy,0);
+            drawCell++;
         }
     }
     
     void drawRect(Graphics g){
-        setGraphicsCip(g,this.x + n_rect.x - n_rect.width/2, this.y + n_rect.y - n_rect.height/2, n_rect.width+1, n_rect.height+1);
+        
+        int xx = this.x + n_rect.x;
+        int yy = this.y + n_rect.y;
+        if((this.n_align_model & Node.ALIGN_H_LEFT) != 0){
+
+        }else if((this.n_align_model & Node.ALIGN_H_RIGHT) != 0){
+            xx -= n_rect.width;
+        }else{
+            xx -= n_rect.width/2;
+        }
+        if((this.n_align_model & Node.ALIGN_V_TOP) != 0){
+
+        }else if((this.n_align_model & Node.ALIGN_V_BOTTOM) != 0){
+            yy -= n_rect.height;
+        }else{
+            yy -= n_rect.height/2;
+        }
+            
+        setGraphicsCip(g,xx, yy, n_rect.width+1, n_rect.height+1);
         g.setColor(n_Color);
-        g.drawRect(this.x + n_rect.x - n_rect.width/2, this.y + n_rect.y - n_rect.height/2, n_rect.width, n_rect.height);
+        g.drawRect(xx, yy, n_rect.width, n_rect.height);
+        drawCell++;
     }
     
     void drawRectFill(Graphics g){
-        if(mLineRect != null){
-            setGraphicsCip(g,this.x + mLineRect.x - mLineRect.width/2, this.y + mLineRect.y - mLineRect.height/2, mLineRect.width, mLineRect.height);
-            g.setColor(mLineColor);
-            g.fillRect(this.x + mLineRect.x - mLineRect.width/2, this.y + mLineRect.y - mLineRect.height/2, mLineRect.width, mLineRect.height);
-            g.setColor(n_Color);
-            g.fillRect(this.x + n_rect.x-n_rect.width/2 - (mLineRect.width - n_rect.width)/2,
-                    this.y + n_rect.y - n_rect.height/2 - (mLineRect.height - n_rect.height)/2,
-                    n_rect.width, n_rect.height);
+        
+        int xx = this.x + n_rect.x;
+        int yy = this.y + n_rect.y;
+        int xx2 = mLineRect != null ? this.x + mLineRect.x : 0;
+        int yy2 = mLineRect != null ? this.y + mLineRect.y : 0;
+        if((this.n_align_model & Node.ALIGN_H_LEFT) != 0){
+            
+        }else if((this.n_align_model & Node.ALIGN_H_RIGHT) != 0){
+            if(mLineRect != null){
+                xx2 -= mLineRect.width;
+                xx -= mLineRect.width;
+            }else{
+                xx -= n_rect.width;
+            }
         }else{
-            setGraphicsCip(g,this.x + mLineRect.x, this.y + mLineRect.y, mLineRect.width, mLineRect.height);
+            if(mLineRect != null){
+                xx2 -= mLineRect.width/2;
+                xx -= mLineRect.width/2;
+            }else{
+                xx -= n_rect.width/2;
+            }
+        }
+        if((this.n_align_model & Node.ALIGN_V_TOP) != 0){
+
+        }else if((this.n_align_model & Node.ALIGN_V_BOTTOM) != 0){
+            if(mLineRect != null){
+                yy2 -= mLineRect.height;
+                yy -= mLineRect.height;
+            }else{
+                yy -= n_rect.height;
+            }
+        }else{
+            if(mLineRect != null){
+                yy2 -= mLineRect.height/2;
+                yy -= mLineRect.height/2;
+            }else{
+                yy -= n_rect.height/2;
+            }
+        }
+        
+        if(mLineRect != null){
+            setGraphicsCip(g,xx2,yy2, mLineRect.width, mLineRect.height);
+            g.setColor(mLineColor);
+            g.fillRect(xx2, yy2, mLineRect.width, mLineRect.height);
             g.setColor(n_Color);
-            g.fillRect(this.x + n_rect.x-n_rect.width/2,
-                    this.y + n_rect.y - n_rect.height/2,
-                    n_rect.width, n_rect.height);
+            g.fillRect(xx,yy,n_rect.width, n_rect.height);
+            drawCell+=2;
+        }else{
+            setGraphicsCip(g,xx, yy, n_rect.width, n_rect.height);
+            g.setColor(n_Color);
+            g.fillRect(xx,yy,n_rect.width, n_rect.height);
+            drawCell++;
         }
     }
     
     void drawCircle(Graphics g){
-        setGraphicsCip(g,this.x + n_rect.x - n_rect.width/2, this.y + n_rect.y - n_rect.height/2, n_rect.width+1, n_rect.height+1);
+        int xx = this.x + n_rect.x;
+        int yy = this.y + n_rect.y;
+        if((this.n_align_model & Node.ALIGN_H_LEFT) != 0){
+
+        }else if((this.n_align_model & Node.ALIGN_H_RIGHT) != 0){
+            xx -= n_rect.width;
+        }else{
+            xx -= n_rect.width/2;
+        }
+        if((this.n_align_model & Node.ALIGN_V_TOP) != 0){
+
+        }else if((this.n_align_model & Node.ALIGN_V_BOTTOM) != 0){
+            yy -= n_rect.height;
+        }else{
+            yy -= n_rect.height/2;
+        }
+        
+        setGraphicsCip(g,xx, yy, n_rect.width+1, n_rect.height+1);
         g.setColor(n_Color);
-        g.drawRoundRect(this.x + n_rect.x - n_rect.width/2, this.y + n_rect.y - n_rect.height/2, n_rect.width, n_rect.height,n_rect.width, n_rect.height);
+        g.drawRoundRect(xx, yy, n_rect.width, n_rect.height,n_rect.width, n_rect.height);
+        drawCell++;
     }
     
     void drawCircleFill(Graphics g){
-        if(mLineRect != null){
-            //setGraphicsCip(g,this.x + mLineRect.x - mLineRect.width/2, this.y + mLineRect.y - mLineRect.height/2, mLineRect.width+1, mLineRect.height+1);
-            g.setColor(mLineColor);
-            g.fillRoundRect(this.x + mLineRect.x - mLineRect.width/2, 
-                    this.y + mLineRect.y - mLineRect.height/2
-                    , mLineRect.width, mLineRect.height, mLineRect.width, mLineRect.height);
-            g.setColor(n_Color);
-            g.fillRoundRect(this.x + n_rect.x - mLineRect.width/2
-                    , this.y + n_rect.y - mLineRect.height/2
-                    , n_rect.width, n_rect.height,n_rect.width, n_rect.height);
+        
+        int xx = this.x + n_rect.x + 1;
+        int yy = this.y + n_rect.y + 1;
+        int xx2 = mLineRect != null ? this.x + mLineRect.x + 1 : 0;
+        int yy2 = mLineRect != null ? this.y + mLineRect.y + 1 : 0;
+        if((this.n_align_model & Node.ALIGN_H_LEFT) != 0){
+            
+        }else if((this.n_align_model & Node.ALIGN_H_RIGHT) != 0){
+            if(mLineRect != null){
+                xx2 -= mLineRect.width;
+                xx -= mLineRect.width;
+            }else{
+                xx -= n_rect.width;
+            }
         }else{
-            setGraphicsCip(g,this.x + n_rect.x - n_rect.width/2, this.y + n_rect.y - n_rect.height/2, n_rect.width+1, n_rect.height+1);
+            if(mLineRect != null){
+                xx2 -= mLineRect.width/2;
+                xx -= mLineRect.width/2;
+            }else{
+                xx -= n_rect.width/2;
+            }
+        }
+        if((this.n_align_model & Node.ALIGN_V_TOP) != 0){
+
+        }else if((this.n_align_model & Node.ALIGN_V_BOTTOM) != 0){
+            if(mLineRect != null){
+                yy2 -= mLineRect.height;
+                yy -= mLineRect.height;
+            }else{
+                yy -= n_rect.height;
+            }
+        }else{
+            if(mLineRect != null){
+                yy2 -= mLineRect.height/2;
+                yy -= mLineRect.height/2;
+            }else{
+                yy -= n_rect.height/2;
+            }
+        }
+        
+        if(mLineRect != null){
+            setGraphicsCip(g,xx2, yy2, mLineRect.width+1, mLineRect.height+1);
+            g.setColor(mLineColor);
+            g.fillRoundRect(xx2,yy2,mLineRect.width, mLineRect.height, mLineRect.width, mLineRect.height);
             g.setColor(n_Color);
-            g.fillRoundRect(this.x + n_rect.x - n_rect.width/2 , 
-                    this.y + n_rect.y - n_rect.height/2, 
-                    n_rect.width, n_rect.height,n_rect.width, n_rect.height);
+            g.fillRoundRect(xx, yy, 
+                n_rect.width, n_rect.height,n_rect.width, n_rect.height);
+            drawCell+=2;
+        }else{
+            setGraphicsCip(g,xx,yy, n_rect.width+1, n_rect.height+1);
+            g.setColor(n_Color);
+            g.fillRoundRect(xx,yy, 
+                n_rect.width, n_rect.height,n_rect.width, n_rect.height);
+            drawCell++;
         }
     }
     
@@ -182,5 +313,15 @@ public class DrawNode extends Node {
         }
         return this;
     }
-
+    public DrawNode setString(String msg){
+        if(this.mModel == 0){
+            mString = msg;
+            int w = this.getFont().stringWidth(mString);
+            int h = this.getFont().getHeight();
+            this.n_rect = new Rect(this.x,this.y,w,h);
+        }else{
+            System.err.println("DrawNode is not Label model");
+        }
+        return this;
+    }
 }

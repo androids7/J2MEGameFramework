@@ -100,12 +100,14 @@ public class Scene extends Node {
     protected void drawSelf(Graphics g){
         g.setColor(0xff00ff);
         String msg = "fps:" + UiThread.getInstance().curFps;
-        g.drawChars(msg.toCharArray(), 0, msg.length(), 8, 8, 0);
-        
+        g.drawString(msg,8, 8, 0);
         long tm = Runtime.getRuntime().totalMemory();
         long fm = Runtime.getRuntime().freeMemory();
         long um = (tm - fm)/1024;
         msg = "memory : total->" + (tm/1024) + "k used->" + um + "k";
-        g.drawChars(msg.toCharArray(), 0, msg.length(), 8, 8 + g.getFont().getHeight() + 2, Graphics.TOP | Graphics.LEFT);
+        g.drawString(msg, 8, 8 + g.getFont().getHeight() + 2, Graphics.TOP | Graphics.LEFT);
+        msg = "draw cell : " + UiThread.getInstance().getDrawCell();
+        g.drawString(msg, 8, 8 + g.getFont().getHeight()*2 + 2, Graphics.TOP | Graphics.LEFT);
+        drawCell+=3;
     }
 }

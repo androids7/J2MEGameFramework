@@ -9,14 +9,14 @@ import javax.microedition.midlet.MIDletStateChangeException;
  */
 public abstract class App extends MIDlet{
 
-    static App mApp = null;
+    public static App Instance = null;
     public static App getInstance(){
-        return mApp;
+        return Instance;
     }
 
     protected void startApp() throws MIDletStateChangeException {
         System.out.println("... startApp ...");
-        mApp = this;
+        Instance = this;
         initApp();
         UiThread.getInstance().start();
         UiThread.getInstance().runOnUiThread(new Runnable(){

@@ -6,7 +6,7 @@ package framework;
  */
 public class Rect {
     
-    protected short x,y,width,height;
+    public int x,y,width,height;
     
     public Rect(){
         x = 0;
@@ -14,18 +14,12 @@ public class Rect {
         width = 0;
         height = 0;
     }
-    
-    public Rect(short x,short y,short width,short height){
+
+    public Rect(int x,int y,int width,int height){
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-    }
-    public Rect(int x,int y,int width,int height){
-        this.x = (short)x;
-        this.y = (short)y;
-        this.width = (short)width;
-        this.height = (short)height;
     }
     
     public Rect clone(){

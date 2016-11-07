@@ -10,11 +10,18 @@ import javax.microedition.lcdui.Graphics;
  */
 public /*abstract*/ class Node {
     
+    public static final int ALIGN_H_CENTER = 1;
+    public static final int ALIGN_H_LEFT = 1 << 1;
+    public static final int ALIGN_H_RIGHT = 1 << 2;
+    public static final int ALIGN_V_CENTER = 1 << 3;
+    public static final int ALIGN_V_TOP = 1 << 4;
+    public static final int ALIGN_V_BOTTOM = 1 << 5;
+    
+    protected int n_align_model = ALIGN_H_CENTER & ALIGN_V_CENTER;
+    
     protected boolean n_bEntered = false;
     protected boolean n_bExited = false;
     protected boolean n_bRemoved = false;
-    
-    private short gFlag = 0;
     
     short n_childNums = 0;
     
@@ -64,8 +71,8 @@ public /*abstract*/ class Node {
         }
     }
     
+    protected static int drawCell = 0;
     protected void drawSelf(Graphics g){
-       
     }
     private void drawChilds(Graphics g){
         Node node = n_chd_head;
@@ -200,6 +207,10 @@ public /*abstract*/ class Node {
     }
     public void setRect(Rect rect){
         n_rect = rect;
+    }
+    
+    public Rect getBoundBox(){
+        return new Rect(this.x - n_rect.width/2,this.y - n_rect.height/2,n_rect.width,n_rect.height);
     }
     
     public void setCliped(Rect rect){
@@ -381,5 +392,11 @@ public /*abstract*/ class Node {
         this.n_KeyEvent = listener;
     }
     
+    public void setAlignModel(int m){
+        this.n_align_model = m;
+    }
+    public void setAlignModel(int h,int v){
+        this.n_align_model = h | v;
+    }
 
 }

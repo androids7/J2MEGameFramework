@@ -12,7 +12,7 @@ import javax.microedition.lcdui.Image;
 
 /**
  *
- * @author Administrator
+ * @author czl
  */
 public class Label extends Node{
     
@@ -39,9 +39,28 @@ public class Label extends Node{
 
     protected void drawSelf(Graphics g){
         if(l_Image != null){
-            setGraphicsCip(g,this.x - l_Image.getWidth()/2, this.y - l_Image.getHeight()/2, l_Image.getWidth(), l_Image.getHeight());
+            int w = this.n_rect.width;
+            int h = this.n_rect.height;
+            int xx = this.x;
+            int yy = this.y;
+            if((this.n_align_model & Node.ALIGN_H_LEFT) != 0){
+
+            }else if((this.n_align_model & Node.ALIGN_H_RIGHT) != 0){
+                xx -= l_Image.getWidth();
+            }else{
+                xx -= l_Image.getWidth()/2;
+            }
+            if((this.n_align_model & Node.ALIGN_V_TOP) != 0){
+
+            }else if((this.n_align_model & Node.ALIGN_V_BOTTOM) != 0){
+                yy -= l_Image.getHeight();
+            }else{
+                yy -= l_Image.getHeight()/2;
+            }
+            setGraphicsCip(g,xx,yy, l_Image.getWidth(), l_Image.getHeight());
             //g.setColor(n_Color);
-            g.drawImage(l_Image, this.x - l_Image.getWidth()/2, this.y - l_Image.getHeight()/2, 0);
+            g.drawImage(l_Image,xx,yy, 0);
+            drawCell++;
         }
     }
     
@@ -84,6 +103,7 @@ public class Label extends Node{
         g.fillRect(0, 0, w, h);
         g.setColor(str_color);
         g.drawString(str,0, 0, 0);
+        drawCell+=2;
         l_content = str;
         l_Image = Image.createImage(img, 0, 0, w, h, 0);
         l_str_color = str_color;
@@ -115,6 +135,7 @@ public class Label extends Node{
         l_str_color = str_color;
         //fiped();
         //rotate(l_rotate);
+        drawCell+=2;
         transform();
         n_rect = new Rect(this.x - l_Image.getWidth()/2, this.y - l_Image.getHeight()/2, l_Image.getWidth(), l_Image.getHeight());
     }
@@ -224,6 +245,7 @@ public class Label extends Node{
         l_bg_color = bg_color;
         //fiped();
         //rotate(l_rotate);
+        drawCell+=2;
         transform();
         n_rect = new Rect(this.x - l_Image.getWidth()/2, this.y - l_Image.getHeight()/2, l_Image.getWidth(), l_Image.getHeight()); 
     }
@@ -295,6 +317,7 @@ public class Label extends Node{
         l_str_color = str_color;
         //fiped();
         //rotate(l_rotate);
+        drawCell+=2;
         transform();
         n_rect = new Rect(this.x - l_Image.getWidth()/2, this.y - l_Image.getHeight()/2, l_Image.getWidth(), l_Image.getHeight()); 
     }

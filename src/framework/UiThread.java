@@ -31,11 +31,12 @@ public class UiThread {
     }
     
     public void start(){
-        
         updateTime = System.currentTimeMillis();
         Display.getDisplay(App.getInstance()).setCurrent(getSceneCanvas());
         //getSceneCanvas().setFullScreenMode(true);
-        
+        Configs.screenWidth = getSceneCanvas().getWidth();
+        Configs.screenHeight = getSceneCanvas().getHeight();
+        Configs.screenCenter = new Vector(Configs.screenWidth/2, Configs.screenHeight/2);
     }
     
     public void runOnUiThread(Runnable r){
@@ -53,6 +54,10 @@ public class UiThread {
     
     SceneCanvas mSceneCanvas = null;
 
+    int drawCell = 0;
+    public int getDrawCell(){
+        return drawCell;
+    }
     public class SceneCanvas extends Canvas{
         
         boolean bPainted = false;
@@ -64,7 +69,8 @@ public class UiThread {
             bPainted = true;
             
             mStartTime = System.currentTimeMillis();
-                        
+            Scene.drawCell = 0;
+            
             // 执行UI线程任务
             if(mRunnableNums > 0){
                 short len;
@@ -101,6 +107,8 @@ public class UiThread {
                     //System.out.println("currentThread hashCode : "+Thread.currentThread().hashCode());
                 }
             }
+            
+            drawCell = Scene.drawCell; // draw次数
             
             // 帧暂停
             long dt = System.currentTimeMillis() - mStartTime;
