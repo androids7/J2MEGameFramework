@@ -555,6 +555,7 @@ public class Res {
         System.out.println("Res.remove file error (unknow file):" + file);
     }
     public static void remove(Image img){
+        if(img == null)return;
         for(int i=0;i<g_imgs.length;i++){
             if(g_imgs[i] == img){
                 g_imgs[i] = null;
@@ -594,6 +595,7 @@ public class Res {
         System.out.println("Res.remove Image error (unknow img):");
     }
     public static void remove(Player player){
+        if(player == null)return;
         for(int i=0;i<g_player.length;i++){
             if(g_player[i] == player){
                 g_player[i] = null;
@@ -633,6 +635,7 @@ public class Res {
         System.out.println("Res.remove Player error (unknow player):");
     }
     public static void remove(byte [] bs){
+        if(bs == null)return;
         for(int i=0;i<g_bytes.length;i++){
             if(g_bytes[i] == bs){
                 g_bytes[i] = null;
@@ -651,9 +654,9 @@ public class Res {
                 return;
             }
         }
-        for(int i=0;i<g_bytes.length;i++){
-            if(g_bytes[i] == bs){
-                g_bytes[i] = null;
+        for(int i=0;i<c_bytes.length;i++){
+            if(c_bytes[i] == bs){
+                c_bytes[i] = null;
                 Integer v = new Integer(RES_TYPE_C_OTHER + i);
                 if(res_map.contains(v)){
                     Enumeration e = res_map.keys();

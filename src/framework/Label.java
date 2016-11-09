@@ -39,8 +39,8 @@ public class Label extends Node{
 
     protected void drawSelf(Graphics g){
         if(l_Image != null){
-            int w = this.n_rect.width;
-            int h = this.n_rect.height;
+            //int w = this.n_rect.width;
+            //int h = this.n_rect.height;
             int xx = this.x;
             int yy = this.y;
             if((this.n_align_model & Node.ALIGN_H_LEFT) != 0){
@@ -516,6 +516,14 @@ public class Label extends Node{
                     break;
             }
         }
+    }
+    
+    protected void onCleanup(){
+        super.onCleanup();
+        l_Image = null;
+        l_bgImage = null;
+        l_font = null;
+        l_content = null;
     }
     
 }

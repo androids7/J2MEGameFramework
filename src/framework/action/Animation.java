@@ -35,7 +35,11 @@ public abstract class Animation {
         a_node = node;
     }
     
-    public Runnable onCompleted = null;
+    protected Runnable onCompleted = null;
+    public Animation setOnCompleteListener(Runnable r){
+        onCompleted = r;
+        return this;
+    }
 
     protected interface IAction{
         public void onActionEnter(Animation ani);

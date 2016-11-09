@@ -5,7 +5,13 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Graphics;
 
 /**
- *
+ * 主循环：
+ * 先执行runOnUiThread的代码，
+ * 再执行Timer定时器的代码，
+ * 再执行Node的update
+ * 再执行Node的动画animUpdate
+ * 再执行Node的onDraw及onXXX节点事件
+ * 最后是sleep，及之后的gc和repaint
  * @author chizl
  */
 public class UiThread {
@@ -140,21 +146,21 @@ public class UiThread {
         protected void keyPressed(int keyCode){
             //System.out.println("KeyEvent down : "+keyCode);
             if(Scene.curScene != null && App.getInstance().bRuning){
-                Scene.curScene.doKeyDown(keyCode);
+                Scene.curScene.doKeyDown(KeyCode.changeKeyCode(keyCode));
             }
         }
         
         protected void keyReleased(int keyCode){
             //System.out.println("KeyEvent up : "+keyCode);
             if(Scene.curScene != null && App.getInstance().bRuning){
-                Scene.curScene.doKeyUp(keyCode);
+                Scene.curScene.doKeyUp(KeyCode.changeKeyCode(keyCode));
             }
         }
         
         protected void keyRepeated(int keyCode){
             //System.out.println("KeyEvent press : "+keyCode);
             if(Scene.curScene != null && App.getInstance().bRuning){
-                Scene.curScene.doKeyPress(keyCode);
+                Scene.curScene.doKeyPress(KeyCode.changeKeyCode(keyCode));
             }
         }
         

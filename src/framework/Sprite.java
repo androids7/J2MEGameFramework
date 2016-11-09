@@ -117,6 +117,87 @@ public class Sprite extends Node{
         return makeBatchImageLimit(makeImage(file),wnum,hnum);
     }
     
+    /**
+     * ¾Å¹¬¸ñ
+     * @param image
+     * @param width
+     * @param height
+     * @param left
+     * @param right
+     * @param top
+     * @param bottom
+     * @return 
+     */
+    public static Image makeScale9Image(Image image,int width,int height,int left,int right,int top,int bottom){
+        Image img = null;
+        if(image != null){
+            int w = image.getWidth();
+            int h = image.getHeight();
+            int[] colors = new int[w * h];
+            image.getRGB(colors, 0, w, 0, 0, w, h);
+            
+            int[] ncolors = new int[width * height];
+            
+            int ow = (w - left - right);
+            int oh = (h - top - bottom);
+            int ox = ow / 2 + left;
+            int oy = oh / 2 + top;
+            int cw = (width - left - right);
+            int ch = (height - top - bottom);
+            int cx = cw/2 + left;
+            int cy = ch/2 + top;
+            for(int i=0;i<width;i++){
+                for(int j=0;j<height;j++){
+                    if(i <= left){
+                        if(j <= top){
+                            ncolors[i + j * width] = colors[i + j * w];
+                        }else if(height - j <= bottom){
+                            ncolors[i + j * width] = colors[i + (h - height + j) * w];
+                        }else{
+                            int c = j < height/2 ? 
+                                    colors[i + top * w] : 
+                                    colors[i + (h - bottom) * w];
+                            ncolors[i + j * width] = c;
+                        }
+                    }else if(width - i <= right){
+                        if(j < top){
+                            ncolors[i + j * width] = colors[w - (width - i) + j * w];
+                        }else if(height - j < bottom){
+                            ncolors[i + j * width] = colors[w - (width - i) + (h - height + j) * w];
+                        }else{
+                            int c = j < height/2 ? 
+                                    colors[w - (width - i) + top * w] : 
+                                    colors[w - (width - i) + (h - bottom) * w];
+                            ncolors[i + j * width] = c;
+                        }
+                    }else if( j < top){
+                        int c = i < width/2 ?
+                                colors[left + j * w]:
+                                colors[w - right + j * w];
+                        ncolors[i + j * width] = c;
+                    }else if(height - j < bottom){
+                        int c = i < width/2 ?
+                                colors[left + (h - height + j) * w]:
+                                colors[w - right + (h - height + j) * w];
+                        ncolors[i + j * width] = c;
+                    }else{
+                        int px =  i < cx ? 1000 * (cx - i) / cx : 1000 * (i - cx) / cx;
+                        int py =  j < cy ? 1000 * (cy - j) / cy : 1000 * (j - cy) / cy;
+                        int x = ow * px / 2000;
+                        x =  (i < cx ? ox - x : ox + x);
+                        int y = oh * py / 2000;
+                        y = (j < cy ? oy - y : oy + y);
+                        ncolors[i + j * width] = colors[x + y * w];
+                    }
+                }
+            }
+            img = Image.createRGBImage(ncolors, width, height, true);
+            colors = null;
+            ncolors = null;
+        }
+        return img;
+    }
+    
     public Sprite setImage(Image image){
         this.s_Image = image;
         if(this.s_Image != null){
@@ -331,6 +412,12 @@ public class Sprite extends Node{
         }
     }
     
+    protected void onCleanup(){
+        super.onCleanup();
+        s_Image = null;
+        s_Frames = null;
+    }
+	
     /*
     public Sprite setRotate(int ratio){
         if(s_Image != null){

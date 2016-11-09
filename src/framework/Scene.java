@@ -16,11 +16,22 @@ public class Scene extends Node {
     
     protected static Scene curScene = null;
     public static void run(Scene s){
+        run(s,true);
+    }
+    public static void run(Scene s,boolean releaseRes){
         if(curScene != null){
             curScene.romoveNow();
+            if(releaseRes){
+                Res.removeAll();            // 释放所有非global里的资源
+                System.gc();
+            }
         }
         curScene = s;
     }
+    
+    protected void onExit(){
+    }
+    
     public static Scene getCurScene(){
         return curScene;
     }
@@ -92,7 +103,7 @@ public class Scene extends Node {
         }
         return false;
     }
-    
+	
     public void update(long dt){
         System.out.println("... update:"+dt);
     }

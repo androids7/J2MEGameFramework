@@ -21,7 +21,7 @@ public class SlideBar extends Node{
     int s_value = 100;
     
     int s_model = 0;
-    
+	
     public static final int MODEL_HORIZONTAL_LEFT = 0;
     public static final int MODEL_HORIZONTAL_RIGHT = 1;
     public static final int MODEL_VERTICAL_TOP = 2;
@@ -174,4 +174,9 @@ public class SlideBar extends Node{
         return this;
     }
     
+    protected void onCleanup(){
+        super.onCleanup();
+        s_Image = null;
+        s_bgImage = null;
+    }
 }

@@ -160,6 +160,15 @@ public /*abstract*/ class Node {
     protected void onExit() {
         
     }
+    
+    protected void onCleanup(){
+        n_parent = null;
+        n_chd_head = null;
+        n_prev = null;
+        n_next = null;
+        n_rect = null;
+        n_clip_rect = null;
+    }
 
     public void romoveNow(){
         n_bExited = true;
@@ -185,6 +194,7 @@ public /*abstract*/ class Node {
             this.n_next = null;
         }
         onExit();
+        onCleanup();
     }
     
     public void removeSelf() {
@@ -399,4 +409,23 @@ public /*abstract*/ class Node {
         this.n_align_model = h | v;
     }
 
+    public Node getChildHead(){
+        return this.n_chd_head;
+    }
+    public Node[] getChilds(){
+        int len = 0;
+        Node node = this.n_chd_head;
+        while(node != null){
+            len++;
+            node = node.n_next;
+        }
+        Node[] chds = new Node[len];
+        len = 0;
+        node = this.n_chd_head;
+        while(node != null){
+            chds[len++] = node;
+            node = node.n_next;
+        }
+        return chds;
+    }
 }

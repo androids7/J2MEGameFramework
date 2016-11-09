@@ -199,5 +199,13 @@ public class Button extends Node{
         return this.bt_Event;
     }
     
-    
+    protected void onCleanup(){
+        super.onCleanup();
+        bt_NormalImage = null;
+        bt_SelectedImage = null;
+        bt_DisableImage = null;
+        bt_Label = null;
+        bt_Font = null;
+        bt_Event = null;       
+    }
 }

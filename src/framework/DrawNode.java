@@ -117,7 +117,8 @@ public class DrawNode extends Node {
                 yy -= h/2;
             }
             
-            setGraphicsCip(g,xx, yy,w,h);
+            setGraphicsCip(g,xx-1, yy-1,w+6,h+6);
+            g.setFont(font);
             g.setColor(n_Color);
             g.drawString(mString,xx, yy,0);
             drawCell++;
@@ -323,5 +324,15 @@ public class DrawNode extends Node {
             System.err.println("DrawNode is not Label model");
         }
         return this;
+    }
+    public String getString(){
+        return mString;
+    }
+    
+    protected void onCleanup(){
+        super.onCleanup();
+        mString = null;
+        mLineRect = null;
+        mFont = null;
     }
 }

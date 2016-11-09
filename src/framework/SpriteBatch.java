@@ -165,4 +165,9 @@ public class SpriteBatch extends Node{
         return sb;
     }
     
+    protected void onCleanup(){
+        super.onCleanup();
+        s_Image = null;
+        s_Images = null;
+    }
 }
