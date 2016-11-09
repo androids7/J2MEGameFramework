@@ -67,14 +67,14 @@ public class Main extends App{
         node.runAction(Repeat.create(Sequence.create(new Animation[]{MoveBy.create(0, 100, 600),MoveBy.create(0, -100, 600)})));
         final Node tmp = node;
         Animation a = MoveTo.create(300,300,2000);
-        a.onCompleted = new Runnable(){
+        a.setOnCompleteListener(new Runnable(){
             public void run(){
                 //tmp.setVisible(false);
                 sp.setZorder(1);
                 //sp.removeSelf();
                 //tmp.removeSelf();
             }
-        };
+        });
         //node.runAction(a);
         Animation b = Blink.create(4, 150);
         /*b.onCompleted = new Runnable(){
