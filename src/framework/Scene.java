@@ -29,6 +29,13 @@ public class Scene extends Node {
         curScene = s;
     }
     
+    public void run(){
+        run(this,true);
+    }
+    public void run(boolean releaseRes){
+        run(this,releaseRes);
+    }
+    
     protected void onExit(){
     }
     

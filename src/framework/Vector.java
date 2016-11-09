@@ -7,7 +7,7 @@ package framework;
 
 /**
  *
- * @author Administrator
+ * @author czl
  */
 public class Vector {
     public int x,y;
@@ -20,4 +20,8 @@ public class Vector {
     }
     
     public static final Vector ZERO = new Vector(0,0);
+    
+    public Vector clone(){
+        return new Vector(this.x,this.y);
+    }
 }

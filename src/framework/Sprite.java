@@ -135,9 +135,7 @@ public class Sprite extends Node{
             int h = image.getHeight();
             int[] colors = new int[w * h];
             image.getRGB(colors, 0, w, 0, 0, w, h);
-            
-            int[] ncolors = new int[width * height];
-            
+
             int ow = (w - left - right);
             int oh = (h - top - bottom);
             int ox = ow / 2 + left;
@@ -146,6 +144,14 @@ public class Sprite extends Node{
             int ch = (height - top - bottom);
             int cx = cw/2 + left;
             int cy = ch/2 + top;
+            
+            if(left < 0 || right < 0 || top < 0 || bottom < 0 || width < 0 || height < 0 ||
+                ow < 0 || oh < 0 || cw < 0 || ch < 0 ){
+                return image;
+            }
+            
+            int[] ncolors = new int[width * height];
+            
             for(int i=0;i<width;i++){
                 for(int j=0;j<height;j++){
                     if(i <= left){
