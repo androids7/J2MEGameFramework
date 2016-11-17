@@ -5,6 +5,7 @@
  */
 package framework;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
@@ -315,6 +316,68 @@ public class Res {
         }
     }
     
+    public static void addPPKRes(CppkReader ppk,final boolean g,final IOnLoadPPK listener){
+        if(ppk != null && ppk.isValid){
+            ppk.read(new CppkReader.IOnReadFile() {
+                public void onReadedOther(byte[] context, String file, String type) {
+                    if(context != null){
+                        if(g){
+                            addOtherToG(context,file);
+                        }else{
+                            addOtherToC(context,file);
+                        }
+                    }
+                    if(listener != null){
+                        listener.onLoadResSuccess(file);
+                    }
+                }
+
+                public void onReadedImage(byte[] context, String file) {
+                    Image img = Image.createImage(context,0,context.length);
+                    if(g){
+                        addImageToG(img,file);
+                    }else{
+                        addImageToC(img,file);
+                    }
+                    if(listener != null){
+                        listener.onLoadResSuccess(file);
+                    }
+                }
+
+                public void onReadedAudio(byte[] context, String file, String type) {
+                    try{
+                        InputStream is = new ByteArrayInputStream(context);
+                        Player player = Manager.createPlayer(is, type);// 创建声音播放器
+                        player.realize();// 获取声音信息
+                        player.prefetch();// 获取声音资源
+                        is.close();
+                        if(g){
+                            addPlayerToG(player,file);
+                        }else{
+                            addPlayerToC(player,file);
+                        }
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    if(listener != null){
+                        listener.onLoadResSuccess(file);
+                    }
+                }
+
+                public void onReadError(String msg) {
+                    if(listener != null){
+                        listener.onLoadResError(msg);
+                    }
+                }
+            });
+            ppk.destory();
+        }
+    }
+    public static void addPPKRes(String file,final boolean g,IOnLoadPPK listener){
+        CppkReader ppk = new CppkReader(file);
+        addPPKRes(ppk,g,listener);
+    }
+    
     public static void addResAsType(String path,int type){
         switch(type){
             case RES_TYPE_G_IMG:
@@ -376,24 +439,53 @@ public class Res {
      * @param listener  加载进度监听
      */
     public static void autoLoadRes(final String[] files,final boolean g,final IOnLoadRes listener){
-        if(listener != null){
-            listener.onLoadResProcess(null, 0);
+        final OnLoadDispatcher dispatcher = new OnLoadDispatcher(listener);
+        if(dispatcher.onLoadRes != null){
+            dispatcher.onLoadRes.onLoadResProcess(null, 0);
         }
         if(files != null){
-            int len = files.length;
+            final int len = files.length;
+            
+            // 计算ppk格式的文件数量及其内部文件数量
+            int ppkCount = 0;
+            int ppkAllFileNumber = 0;
+            for(int i=0;i<len;i++){
+                String file = files[i];
+                if(file.endsWith(".ppk")){
+                    ppkCount++;
+                }
+            }
+            CppkReader[] cppks = new CppkReader[ppkCount];
+            int index = 0;
+            for(int i=0;i<len;i++){
+                String file = files[i];
+                if(file.endsWith(".ppk")){
+                    CppkReader cppk = new CppkReader(file);
+                    cppks[index++] = cppk;
+                    ppkAllFileNumber += cppk.getFileCount();
+                }
+            }
+            dispatcher.setTotalValue(len + ppkAllFileNumber - ppkCount);   // 总加载文件数
+            
+            index = 0;
             for(int i=0;i<len;i++){
                 String file = files[i];
                 if(file != null){
-                    addResAsType(file,getFileType(file,g));
-                }
-                if(listener != null){
-                    listener.onLoadResProcess(file, (i+1)*100 / len);
+                    if(file.endsWith(".ppk")){
+                        addPPKRes(cppks[index++], g,dispatcher);
+                    }else{
+                        addResAsType(file,getFileType(file,g));
+                        dispatcher.loaded(file);
+                    }
+                }else{
+                    dispatcher.loaded(file);
                 }
             }
         }
-        if(listener != null){
-            listener.onLoadResCompleted();
+        if(dispatcher.onLoadRes != null){
+            dispatcher.onLoadRes.onLoadResCompleted();
         }
+        dispatcher.onLoadRes = null;
     }
 
     /**
@@ -413,6 +505,49 @@ public class Res {
     public interface IOnLoadRes{
         public void onLoadResCompleted();
         public void onLoadResProcess(String file,int value); // value : 0~100
+    }
+    
+    private interface IOnLoadPPK{
+        public void onLoadResSuccess(String file);
+        public void onLoadResError(String msg);
+    }
+    
+    /**
+     * 辅助加载资源的回调函数
+     */
+    private static class OnLoadDispatcher implements IOnLoadPPK{
+        IOnLoadRes onLoadRes;
+        public OnLoadDispatcher(IOnLoadRes onLoadRes){
+            this.onLoadRes = onLoadRes;
+        }
+        int m_totalValue;
+        int m_curLoadIndex = 0;
+        public OnLoadDispatcher setTotalValue(int v){
+            m_totalValue = v;
+            return  this;
+        }
+        // 非ppk文件加载时被调用
+        public void loaded(String file){
+            //System.out.println("OnLoadDispatcher loaded : " + m_curLoadIndex + " " + m_totalValue);
+            if(onLoadRes != null){
+                onLoadRes.onLoadResProcess(file, (++m_curLoadIndex) * 100 / m_totalValue);
+            }
+        }
+        
+        // ppk 文件加载的回调
+        public void onLoadResSuccess(String file){
+            //System.out.println("OnLoadDispatcher onLoadResSuccess : " + m_curLoadIndex + " " + m_totalValue);
+            if(onLoadRes != null){
+                onLoadRes.onLoadResProcess(file, (++m_curLoadIndex) * 100 / m_totalValue);
+            }
+        }
+        public void onLoadResError(String msg){
+            //System.out.println("OnLoadDispatcher onLoadResError : " + m_curLoadIndex + " " + m_totalValue);
+            System.out.println("on load ppk error:" + msg);
+            if(onLoadRes != null){
+                onLoadRes.onLoadResProcess(null, (++m_curLoadIndex) * 100 / m_totalValue);
+            }
+        }
     }
 
     /**
